@@ -1,5 +1,5 @@
 import type { User } from "@supabase/supabase-js";
-import { createContext, useEffect, useReducer } from "react";
+import { createContext, useContext, useEffect, useReducer } from "react";
 import { supabase } from "../services/supabase/client";
 
 // 1. TYPES - AuthState, AuthAction, AuthContextType
@@ -148,3 +148,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   );
 }
 // 5. HOOK - useAuth para consumir el contexto
+export function useAuth() {
+  const context = useContext(AuthContext);
+  if (!context) throw new Error("useAuth debe usarse dentro de AuthProvider");
+  return context;
+}
