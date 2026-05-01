@@ -6,7 +6,7 @@
 - **Estilos:** Tailwind v4 con @tailwindcss/vite
 - **Autenticación:** Supabase Auth
 - **Estado global:** useReducer + Context (sin Zustand ni Redux)
-- **Formularios:** react-hook-form + zod
+- **Formularios:** react-hook-form + zod v4
 - **Iconos:** lucide-react
 - **Router:** react-router-dom
 - **Control de versiones:** Git + GitHub
@@ -31,6 +31,7 @@ mi-gestor-de-tareas/
 │   │   │   │   ├── components/
 │   │   │   │   ├── hooks/
 │   │   │   │   └── pages/
+│   │   │   │       └── LoginPage.tsx ✅
 │   │   │   └── tasks/
 │   │   │       ├── components/
 │   │   │       ├── hooks/
@@ -86,6 +87,12 @@ mi-gestor-de-tareas/
 
 ## Archivos importantes
 
+### `frontend/.env.local`
+```
+VITE_SUPABASE_URL=https://tuprojectref.supabase.co   ← solo el dominio, sin /rest/v1/
+VITE_SUPABASE_ANON_KEY=tu_anon_key
+```
+
 ### `frontend/src/services/supabase/client.ts`
 ```typescript
 import { createClient } from '@supabase/supabase-js'
@@ -96,42 +103,12 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 ```
 
-### `frontend/src/types/task.types.ts`
-```typescript
-import type { Database } from './supabase.types'
-
-export type Profile = Database['public']['Tables']['profiles']['Row']
-export type Project = Database['public']['Tables']['projects']['Row']
-export type Tag = Database['public']['Tables']['tags']['Row']
-export type Task = Database['public']['Tables']['tasks']['Row']
-export type TaskTag = Database['public']['Tables']['task_tags']['Row']
-
-export type InsertTask = Database['public']['Tables']['tasks']['Insert']
-export type InsertProject = Database['public']['Tables']['projects']['Insert']
-export type InsertTag = Database['public']['Tables']['tags']['Insert']
-
-export type UpdateTask = Database['public']['Tables']['tasks']['Update']
-export type UpdateProject = Database['public']['Tables']['projects']['Update']
-
-export type TaskWithTags = Task & { tags: Tag[] }
-export type TaskWithProject = Task & { project: Project | null }
-export type TaskComplete = Task & {
-  tags: Tag[]
-  project: Project | null
-  subtasks: Task[]
-}
-
-export type TaskStatus = 'todo' | 'in_progress' | 'done'
-export type TaskPriority = 'low' | 'medium' | 'high'
-```
-
 ### `frontend/src/context/AuthContext.tsx`
 ```typescript
 import { createContext, useReducer, useEffect, useContext } from 'react'
 import type { User } from '@supabase/supabase-js'
 import { supabase } from '../services/supabase/client'
 
-// 1. TYPES
 type AuthState = {
   user: User | null
   loading: boolean
@@ -151,7 +128,6 @@ type AuthContextType = {
   signOut: () => Promise<void>
 }
 
-// 2. REDUCER
 function authReducer(state: AuthState, action: AuthAction): AuthState {
   switch (action.type) {
     case 'SET_USER':
@@ -167,10 +143,7 @@ function authReducer(state: AuthState, action: AuthAction): AuthState {
   }
 }
 
-// 3. CONTEXT
 const AuthContext = createContext<AuthContextType | null>(null)
-
-// 4. PROVIDER
 const initialState: AuthState = { user: null, loading: true, error: null }
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -240,7 +213,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   )
 }
 
-// 5. HOOK
 export function useAuth() {
   const context = useContext(AuthContext)
   if (!context) throw new Error('useAuth debe usarse dentro de AuthProvider')
@@ -264,9 +236,9 @@ export function PrivateRoute({ children }: { children: React.ReactNode }) {
 ### `frontend/src/router/AppRouter.tsx`
 ```typescript
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { LoginPage } from '../features/auth/pages/LoginPage'
 import { PrivateRoute } from './PrivateRoute'
 
-const LoginPage = () => <div>Login</div>
 const RegisterPage = () => <div>Register</div>
 const TaskPage = () => <div>Tasks</div>
 
@@ -288,21 +260,61 @@ export function AppRouter() {
 }
 ```
 
-### `frontend/src/main.tsx`
+### `frontend/src/features/auth/pages/LoginPage.tsx`
 ```typescript
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import { AppRouter } from './router/AppRouter'
-import { AuthProvider } from './context/AuthContext'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../../../context/AuthContext'
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <AuthProvider>
-      <AppRouter />
-    </AuthProvider>
-  </StrictMode>
-)
+const loginSchema = z.object({
+  email: z.email('Introduce un email válido'),
+  password: z.string().min(6, 'La contraseña debe tener al menos 6 caracteres'),
+})
+
+type LoginFormData = z.infer<typeof loginSchema>
+
+export function LoginPage() {
+  const navigate = useNavigate()
+  const { signIn, state } = useAuth()
+
+  const initialValues: LoginFormData = { email: '', password: '' }
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: initialValues,
+  })
+
+  const onSubmit = async (data: LoginFormData) => {
+    const { email, password } = data
+    await signIn(email, password)
+    if (!state.error) {
+      reset()
+      navigate('/tasks')
+    }
+  }
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div>
+        <input {...register('email')} placeholder="tu@email.com" />
+        {errors.email && <span>{errors.email.message}</span>}
+      </div>
+      <div>
+        <input {...register('password')} type="password" placeholder="Tu Password" />
+        {errors.password && <span>{errors.password.message}</span>}
+      </div>
+      {state.error && <span>{state.error}</span>}
+      <button type="submit">Entrar</button>
+    </form>
+  )
+}
 ```
 
 ---
@@ -317,6 +329,7 @@ chore(frontend): create folder structure
 feat(frontend): add supabase and task types
 feat(frontend): add auth context with useReducer
 feat(frontend): add router with public and private routes
+feat(frontend): add login page with form validation and auth
 ```
 
 ---
@@ -327,10 +340,11 @@ feat(frontend): add router with public and private routes
 - ✅ Tipos TypeScript generados
 - ✅ AuthContext con useReducer
 - ✅ Router con rutas públicas y privadas
+- ✅ LoginPage funcionando con validación y redirección a /tasks
 
 ## Próximos pasos
-1. Páginas de Login y Register con formularios
-2. Validación con react-hook-form + zod
+1. Página de Register (muy similar a Login)
+2. Estilos con Tailwind en las páginas de auth
 3. Servicios CRUD de tareas, proyectos y tags
 4. Contexto de tareas con useReducer
 5. Páginas y componentes de tareas
@@ -338,9 +352,11 @@ feat(frontend): add router with public and private routes
 
 ---
 
-## Convenciones del proyecto
-- Commits: `tipo(scope): descripción` — ej: `feat(frontend): add login page`
-- Tipos de commit: `feat`, `fix`, `chore`, `refactor`, `style`, `docs`
-- Scopes: `frontend`, `backend`, `shared`
+## Notas importantes
+- **Zod v4**: usar `z.email()` en lugar de `z.string().email()` (deprecado en v4)
+- **Backend**: no tiene package.json ni npm, usa Deno. No hay que arrancar nada localmente
+- **VITE_SUPABASE_URL**: solo el dominio, sin `/rest/v1/` al final
+- **`.env.local`**: debe tener el punto inicial, si no Vite no lo lee
+- **Commits**: `tipo(scope): descripción` — ej: `feat(frontend): add login page`
 - Los componentes nunca llaman a Supabase directamente, solo los servicios
 - Estado global con useReducer + Context, sin Zustand ni Redux
