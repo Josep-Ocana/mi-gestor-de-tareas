@@ -1,7 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { LoginPage } from "../features/auth/pages/LoginPage";
 import { PrivateRoute } from "./PrivateRoute";
 
-const LoginPage = () => <div>Login</div>;
 const RegisterPage = () => <div>Register</div>;
 const TaskPage = () => <div>Tasks</div>;
 
