@@ -30,7 +30,7 @@ export const createTask = async (task: InsertTask): Promise<Task> => {
 export const updateTask = async (
   id: Task["id"],
   task: UpdateTask,
-): Promise<Task | null> => {
+): Promise<Task> => {
   const { data, error } = await supabase
     .from("tasks")
     .update(task)
@@ -38,7 +38,7 @@ export const updateTask = async (
     .select()
     .single();
   if (error) throw error;
-  return data;
+  return data!; // necesario, Typescript le dice confi que no es null, si no habría lanzado el error antes
 };
 
 export const deleteTask = async (id: Task["id"]): Promise<void> => {
