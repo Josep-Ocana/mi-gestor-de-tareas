@@ -1,9 +1,8 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { LoginPage } from "../features/auth/pages/LoginPage";
 import { RegisterPage } from "../features/auth/pages/RegisterPage";
+import { TasksPage } from "../features/auth/pages/TasksPage";
 import { PrivateRoute } from "./PrivateRoute";
-
-const TaskPage = () => <div>Tasks</div>;
 
 export function AppRouter() {
   return (
@@ -18,7 +17,7 @@ export function AppRouter() {
           path="/tasks"
           element={
             <PrivateRoute>
-              <TaskPage />
+              <TasksPage />
             </PrivateRoute>
           }
         />
