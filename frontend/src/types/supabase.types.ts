@@ -140,9 +140,9 @@ export type Database = {
           id: string
           owner_id: string
           parent_task_id: string | null
-          priority: string | null
+          priority: string
           project_id: string | null
-          status: string | null
+          status: string
           title: string
           updated_at: string | null
         }
@@ -153,9 +153,9 @@ export type Database = {
           id?: string
           owner_id: string
           parent_task_id?: string | null
-          priority?: string | null
+          priority?: string
           project_id?: string | null
-          status?: string | null
+          status?: string
           title: string
           updated_at?: string | null
         }
@@ -166,9 +166,9 @@ export type Database = {
           id?: string
           owner_id?: string
           parent_task_id?: string | null
-          priority?: string | null
+          priority?: string
           project_id?: string | null
-          status?: string | null
+          status?: string
           title?: string
           updated_at?: string | null
         }
