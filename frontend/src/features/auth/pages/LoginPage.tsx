@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
-import { useAuth } from "../../../context/AuthContext";
+import { useAuth } from "../../../context/auth/useAuth";
 
 const loginSchema = z.object({
   email: z.email("Introduce un email válido"),

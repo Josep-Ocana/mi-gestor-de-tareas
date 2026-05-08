@@ -1,62 +1,10 @@
-import type { User } from "@supabase/supabase-js";
-import { createContext, useContext, useEffect, useReducer } from "react";
-import { supabase } from "../services/supabase/client";
+import { createContext, useEffect, useReducer } from "react";
+import { supabase } from "../../services/supabase/client";
+import { authReducer } from "./auth.reducer";
+import type { AuthContextType, AuthState } from "./auth.types";
 
-// 1. TYPES - AuthState, AuthAction, AuthContextType
-export type AuthState = {
-  user: User | null;
-  loading: boolean;
-  error: string | null;
-};
-
-type AuthAction =
-  | { type: "SET_USER"; payload: User }
-  | { type: "SIGN_OUT" }
-  | { type: "SET_LOADING" }
-  | { type: "SET_ERROR"; payload: string };
-
-type AuthContextType = {
-  state: AuthState;
-  signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string) => Promise<void>;
-  signOut: () => Promise<void>;
-};
-
-// 2. REDUCER - función que maneja las acciones
-function authReducer(state: AuthState, action: AuthAction): AuthState {
-  switch (action.type) {
-    case "SET_USER":
-      return {
-        ...state,
-        user: action.payload,
-        loading: false,
-        error: null,
-      };
-    case "SIGN_OUT":
-      return {
-        ...state,
-        user: null,
-        loading: false,
-        error: null,
-      };
-    case "SET_LOADING":
-      return {
-        ...state,
-        loading: true,
-        error: null,
-      };
-    case "SET_ERROR":
-      return {
-        ...state,
-        loading: false,
-        error: action.payload,
-      };
-    default:
-      return state;
-  }
-}
 // 3. CONTEXT - createContext
-const AuthContext = createContext<AuthContextType | null>(null);
+export const AuthContext = createContext<AuthContextType | null>(null);
 
 // 4. PROVIDER - useReducer, useEffect (recuperar sesión), funciones signIn, signOut, signUp
 const initialState: AuthState = {
@@ -146,10 +94,4 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       {children}
     </AuthContext.Provider>
   );
-}
-// 5. HOOK - useAuth para consumir el contexto
-export function useAuth() {
-  const context = useContext(AuthContext);
-  if (!context) throw new Error("useAuth debe usarse dentro de AuthProvider");
-  return context;
 }

@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
-import { useAuth } from "../../../context/AuthContext";
+import { useAuth } from "../../../context/auth/useAuth";
 import { useTask } from "../../../context/TaskContext";
 import type { Task } from "../../../types/task.types";
 import { statusLabels } from "../../../utils/task.utils";
