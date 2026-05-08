@@ -1,9 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import { useAuth } from "../../../context/AuthContext";
 import { useTask } from "../../../context/TaskContext";
+import type { Task } from "../../../types/task.types";
 import { statusLabels } from "../../../utils/task.utils";
 
 const taskSchema = z.object({
@@ -15,8 +16,10 @@ const taskSchema = z.object({
 type TaskFormData = z.infer<typeof taskSchema>;
 
 export function TasksPage() {
-  const { state, getTasks, createTask } = useTask();
+  const { state, getTasks, createTask, updateTask, deleteTask } = useTask();
   const { state: authState } = useAuth();
+
+  const [editingTask, setEditingTask] = useState<Task | null>(null);
 
   useEffect(() => {
     getTasks();
@@ -39,11 +42,27 @@ export function TasksPage() {
   });
 
   const onSubmit = async (data: TaskFormData) => {
-    await createTask({
-      ...data,
-      owner_id: authState.user!.id,
+    if (editingTask) {
+      await updateTask(editingTask.id, data);
+    } else {
+      await createTask({
+        ...data,
+        owner_id: authState.user!.id,
+      });
+      if (!state.error) {
+        reset();
+        setEditingTask(null);
+      }
+    }
+  };
+
+  const handleEdit = (task: Task) => {
+    setEditingTask(task);
+    reset({
+      title: task.title,
+      description: task.description ?? "",
+      status: task.status as "todo",
     });
-    if (!state.error) reset();
   };
 
   return (
@@ -90,23 +109,25 @@ export function TasksPage() {
                 </span>
               )}
             </div>
-            <div className="mb-6 flex flex-col gap-2">
-              <label htmlFor="status">Estado:</label>
-              <select
-                {...register("status")}
-                className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-              >
-                <option value="todo">Por hacer</option>
-                <option value="in_progress">En progreso</option>
-                <option value="done">Completada</option>
-              </select>
-            </div>
+            {editingTask && (
+              <div className="mb-6 flex flex-col gap-2">
+                <label htmlFor="status">Estado:</label>
+                <select
+                  {...register("status")}
+                  className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                >
+                  <option value="todo">Por hacer</option>
+                  <option value="in_progress">En progreso</option>
+                  <option value="done">Completada</option>
+                </select>
+              </div>
+            )}
 
             <button
               type="submit"
               className="w-full rounded-lg bg-emerald-600 py-3 font-medium text-white transition-colors hover:bg-emerald-700"
             >
-              Crear
+              {editingTask ? "Guardar cambios" : "Crear Tarea"}
             </button>
           </form>
         </section>
@@ -135,16 +156,32 @@ export function TasksPage() {
                     <div className="text-sm text-slate-500">
                       {task.description}
                     </div>
-                    <div
-                      className={`mt-3 inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${
-                        task.status === "done"
-                          ? "bg-emerald-100 text-emerald-700"
-                          : task.status === "in_progress"
-                            ? "bg-amber-100 text-amber-700"
-                            : "bg-slate-100 text-slate-700"
-                      }`}
-                    >
-                      {statusLabels[task.status ?? "todo"]}
+                    <div className="flex justify-between">
+                      <div
+                        className={`mt-3 inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${
+                          task.status === "done"
+                            ? "bg-emerald-100 text-emerald-700"
+                            : task.status === "in_progress"
+                              ? "bg-amber-100 text-amber-700"
+                              : "bg-slate-100 text-slate-700"
+                        }`}
+                      >
+                        {statusLabels[task.status ?? "todo"]}
+                      </div>
+                      <div>
+                        <button
+                          className="mt-3 inline-flex rounded-full px-2.5 py-1 text-xs font-medium"
+                          onClick={() => deleteTask(task.id)}
+                        >
+                          Eliminar
+                        </button>
+                        <button
+                          className="mt-3 inline-flex rounded-full px-2.5 py-1 text-xs font-medium"
+                          onClick={() => handleEdit(task)}
+                        >
+                          Actualizar
+                        </button>
+                      </div>
                     </div>
                   </div>
                 ))}
