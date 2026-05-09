@@ -3,10 +3,10 @@ import { supabase } from "../../services/supabase/client";
 import { authReducer } from "./auth.reducer";
 import type { AuthContextType, AuthState } from "./auth.types";
 
-// 3. CONTEXT - createContext
+// CONTEXT - createContext
 export const AuthContext = createContext<AuthContextType | null>(null);
 
-// 4. PROVIDER - useReducer, useEffect (recuperar sesión), funciones signIn, signOut, signUp
+// PROVIDER - useReducer, useEffect (recuperar sesión), funciones signIn, signOut, signUp
 const initialState: AuthState = {
   user: null,
   loading: true, // true porque al arrancar estamos comprobando la sesión

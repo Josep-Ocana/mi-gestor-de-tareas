@@ -1,6 +1,6 @@
 import type { AuthAction, AuthState } from "./auth.types";
 
-// 2. REDUCER - función que maneja las acciones
+// REDUCER - función que maneja las acciones
 export function authReducer(state: AuthState, action: AuthAction): AuthState {
   switch (action.type) {
     case "SET_USER":

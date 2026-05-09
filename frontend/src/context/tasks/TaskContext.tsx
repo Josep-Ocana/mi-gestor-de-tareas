@@ -4,15 +4,15 @@ import {
   deleteTask as deleteTaskService,
   getTasks as fetchTasks,
   updateTask as updateTaskService,
-} from "../../services/supabase/tasks.service";
+} from "../../services/tasks.service";
 import type { InsertTask, Task, UpdateTask } from "../../types/task.types";
 import { taskReducer } from "./tasks.reducer";
 import type { TaskContextType, TaskState } from "./tasks.types";
 
-// 3. CONTEXT
+// CONTEXT
 export const TaskContext = createContext<TaskContextType | null>(null);
 
-// 4. PROVIDER
+// PROVIDER
 const initialState: TaskState = {
   tasks: [],
   loading: true,

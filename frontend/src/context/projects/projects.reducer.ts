@@ -1,37 +1,42 @@
-import type { TaskAction, TaskState } from "./tasks.types";
+import type { ProjectAction, ProjectState } from "./projects.types";
 
 // REDUCER - función que maneja las acciones
-export function taskReducer(state: TaskState, action: TaskAction): TaskState {
+export function projectReducer(
+  state: ProjectState,
+  action: ProjectAction,
+): ProjectState {
   switch (action.type) {
-    case "SET_TASKS":
+    case "SET_PROJECTS":
       return {
         ...state,
         loading: false,
         error: null,
-        tasks: action.payload,
+        projects: action.payload,
       };
-    case "CREATE_TASK":
+    case "CREATE_PROJECT":
       return {
         ...state,
         loading: false,
         error: null,
-        tasks: [...state.tasks, action.payload],
+        projects: [...state.projects, action.payload],
       };
-    case "UPDATE_TASK":
+    case "UPDATE_PROJECT":
       return {
         ...state,
         loading: false,
         error: null,
-        tasks: state.tasks.map((task) =>
-          task.id === action.payload.id ? action.payload : task,
+        projects: state.projects.map((project) =>
+          project.id === action.payload.id ? action.payload : project,
         ),
       };
-    case "DELETE_TASK":
+    case "DELETE_PROJECT":
       return {
         ...state,
         loading: false,
         error: null,
-        tasks: state.tasks.filter((task) => task.id !== action.payload),
+        projects: state.projects.filter(
+          (project) => project.id !== action.payload,
+        ),
       };
     case "SET_LOADING":
       return {

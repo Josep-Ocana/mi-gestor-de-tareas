@@ -1,5 +1,5 @@
-import type { InsertTask, Task, UpdateTask } from "../../types/task.types";
-import { supabase } from "./client";
+import type { InsertTask, Task, UpdateTask } from "../types/task.types";
+import { supabase } from "./supabase/client";
 
 export const getTasks = async (): Promise<Task[]> => {
   const { data, error } = await supabase.from("tasks").select("*");

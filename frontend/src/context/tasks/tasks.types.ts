@@ -1,6 +1,6 @@
 import type { InsertTask, Task, UpdateTask } from "../../types/task.types";
 
-// 1.TYPES - TaskState, TaskAction, TaskContextType
+// TYPES - TaskState, TaskAction, TaskContextType
 export type TaskState = {
   tasks: Task[];
   loading: boolean;

@@ -1,6 +1,6 @@
 import type { User } from "@supabase/supabase-js";
 
-// 1. TYPES - AuthState, AuthAction, AuthContextType
+// TYPES - AuthState, AuthAction, AuthContextType
 export type AuthState = {
   user: User | null;
   loading: boolean;
