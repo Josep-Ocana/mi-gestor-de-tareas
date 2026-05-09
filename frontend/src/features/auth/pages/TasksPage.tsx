@@ -57,6 +57,7 @@ export function TasksPage() {
   };
 
   const handleEdit = (task: Task) => {
+    console.log("Editando:", task.title, task.description);
     setEditingTask(task);
     reset({
       title: task.title,
@@ -73,6 +74,7 @@ export function TasksPage() {
           className="mx-auto w-full max-w-md lg:mx-0 lg:justify-self-end"
         >
           <form
+            key={editingTask?.id ?? "new"}
             onSubmit={handleSubmit(onSubmit)}
             className="w-full max-w-md rounded-xl bg-white p-6 shadow"
           >
