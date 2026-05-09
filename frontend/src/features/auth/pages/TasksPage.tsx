@@ -57,7 +57,6 @@ export function TasksPage() {
   };
 
   const handleEdit = (task: Task) => {
-    console.log("Editando:", task.title, task.description);
     setEditingTask(task);
     reset({
       title: task.title,
@@ -86,6 +85,7 @@ export function TasksPage() {
             <div className="mb-4 flex flex-col gap-2">
               <label htmlFor="title">Título</label>
               <input
+                id="title"
                 type="text"
                 {...register("title")}
                 placeholder="Añade un título"
@@ -100,6 +100,7 @@ export function TasksPage() {
             <div className="mb-4 flex flex-col gap-2">
               <label htmlFor="description">Descripción:</label>
               <input
+                id="description"
                 type="text"
                 {...register("description")}
                 placeholder="Añade una descripción de la tarea"
@@ -115,6 +116,7 @@ export function TasksPage() {
               <div className="mb-6 flex flex-col gap-2">
                 <label htmlFor="status">Estado:</label>
                 <select
+                  id="status"
                   {...register("status")}
                   className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 >
