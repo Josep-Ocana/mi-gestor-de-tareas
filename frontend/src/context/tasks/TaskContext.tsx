@@ -1,88 +1,16 @@
-import { createContext, useContext, useEffect, useReducer } from "react";
+import { createContext, useEffect, useReducer } from "react";
 import {
   createTask as createTaskService,
   deleteTask as deleteTaskService,
   getTasks as fetchTasks,
   updateTask as updateTaskService,
-} from "../services/supabase/tasks.service";
-import type { InsertTask, Task, UpdateTask } from "../types/task.types";
-
-// 1.TYPES - TaskState, TaskAction, TaskContextType
-export type TaskState = {
-  tasks: Task[];
-  loading: boolean;
-  error: string | null;
-};
-
-type TaskAction =
-  | { type: "SET_TASKS"; payload: Task[] }
-  | { type: "CREATE_TASK"; payload: Task }
-  | { type: "UPDATE_TASK"; payload: Task }
-  | { type: "DELETE_TASK"; payload: Task["id"] }
-  | { type: "SET_LOADING" }
-  | { type: "SET_ERROR"; payload: string };
-
-type TaskContextType = {
-  state: TaskState;
-  getTasks: () => Promise<void>;
-  createTask: (task: InsertTask) => Promise<void>;
-  updateTask: (id: Task["id"], task: UpdateTask) => Promise<void>;
-  deleteTask: (id: Task["id"]) => Promise<void>;
-};
-
-// 2. REDUCER
-function taskReducer(state: TaskState, action: TaskAction): TaskState {
-  switch (action.type) {
-    case "SET_TASKS":
-      return {
-        ...state,
-        loading: false,
-        error: null,
-        tasks: action.payload,
-      };
-    case "CREATE_TASK":
-      return {
-        ...state,
-        loading: false,
-        error: null,
-        tasks: [...state.tasks, action.payload],
-      };
-    case "UPDATE_TASK":
-      return {
-        ...state,
-        loading: false,
-        error: null,
-        tasks: state.tasks.map((task) =>
-          task.id === action.payload.id ? action.payload : task,
-        ),
-      };
-    case "DELETE_TASK":
-      return {
-        ...state,
-        loading: false,
-        error: null,
-        tasks: state.tasks.filter((task) => task.id !== action.payload),
-      };
-    case "SET_LOADING":
-      return {
-        ...state,
-        loading: true,
-        error: null,
-      };
-    case "SET_ERROR":
-      return {
-        ...state,
-        loading: false,
-        error: action.payload,
-      };
-
-    default:
-      return state;
-  }
-}
+} from "../../services/supabase/tasks.service";
+import type { InsertTask, Task, UpdateTask } from "../../types/task.types";
+import { taskReducer } from "./tasks.reducer";
+import type { TaskContextType, TaskState } from "./tasks.types";
 
 // 3. CONTEXT
-const TaskContext = createContext<TaskContextType | null>(null);
+export const TaskContext = createContext<TaskContextType | null>(null);
 
 // 4. PROVIDER
 const initialState: TaskState = {
@@ -155,11 +83,4 @@ export function TaskProvider({ children }: { children: React.ReactNode }) {
       {children}
     </TaskContext.Provider>
   );
-}
-
-// 5. HOOK
-export function useTask() {
-  const context = useContext(TaskContext);
-  if (!context) throw new Error("useTask debe usarse dentro de TaskProvider");
-  return context;
 }

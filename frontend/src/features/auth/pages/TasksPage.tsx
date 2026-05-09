@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import { useAuth } from "../../../context/auth/useAuth";
-import { useTask } from "../../../context/TaskContext";
+import { useTask } from "../../../context/tasks/useTask";
 import type { Task } from "../../../types/task.types";
 import { statusLabels } from "../../../utils/task.utils";
 
