@@ -1,15 +1,14 @@
 import type { Project } from "./project.types";
 import type { Database } from "./supabase.types";
+import type { Tag } from "./tag.types";
 
 // Tipos base extraídos del esquema
 export type Profile = Database["public"]["Tables"]["profiles"]["Row"];
-export type Tag = Database["public"]["Tables"]["tags"]["Row"];
 export type Task = Database["public"]["Tables"]["tasks"]["Row"];
 export type TaskTag = Database["public"]["Tables"]["task_tags"]["Row"];
 
 // Tipos para insertar
 export type InsertTask = Database["public"]["Tables"]["tasks"]["Insert"];
-export type InsertTag = Database["public"]["Tables"]["tags"]["Insert"];
 
 // Tipos para actualizar
 export type UpdateTask = Database["public"]["Tables"]["tasks"]["Update"];
