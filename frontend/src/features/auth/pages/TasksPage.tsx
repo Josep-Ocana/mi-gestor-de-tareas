@@ -70,16 +70,18 @@ export function TasksPage() {
       <main className="min-h-screen bg-slate-50 px-4 py-8 lg:grid lg:grid-cols-[minmax(0,28rem)_1fr] lg:gap-6">
         <section
           id="form"
+          aria-label="Formulario de tarea"
           className="mx-auto w-full max-w-md lg:mx-0 lg:justify-self-end"
         >
           <form
             key={editingTask?.id ?? "new"}
             onSubmit={handleSubmit(onSubmit)}
             className="w-full max-w-md rounded-xl bg-white p-6 shadow"
+            aria-busy={state.loading}
           >
             <div className="mb-6 flex flex-col gap-1">
               <h1 className="text-2xl font-bold text-slate-900">
-                Crea una nueva tarea
+                {editingTask ? "Editar tarea" : "Crea una nueva tarea"}
               </h1>
             </div>
             <div className="mb-4 flex flex-col gap-2">
@@ -88,11 +90,14 @@ export function TasksPage() {
                 id="title"
                 type="text"
                 {...register("title")}
+                aria-required="true"
+                aria-invalid={errors.title ? "true" : undefined}
+                aria-describedby={errors.title ? "title-error" : undefined}
                 placeholder="Añade un título"
                 className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
               />
               {errors.title && (
-                <span className="text-red-500 text-sm">
+                <span id="title-error" role="alert" className="text-red-500 text-sm">
                   {errors.title.message}
                 </span>
               )}
@@ -103,11 +108,13 @@ export function TasksPage() {
                 id="description"
                 type="text"
                 {...register("description")}
+                aria-invalid={errors.description ? "true" : undefined}
+                aria-describedby={errors.description ? "description-error" : undefined}
                 placeholder="Añade una descripción de la tarea"
                 className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500"
               />
               {errors.description && (
-                <span className="text-red-500 text-sm">
+                <span id="description-error" role="alert" className="text-red-500 text-sm">
                   {errors.description.message}
                 </span>
               )}
@@ -129,29 +136,35 @@ export function TasksPage() {
 
             <button
               type="submit"
-              className="w-full rounded-lg bg-emerald-600 py-3 font-medium text-white transition-colors hover:bg-emerald-700"
+              disabled={state.loading}
+              aria-busy={state.loading}
+              className="w-full rounded-lg bg-emerald-600 py-3 font-medium text-white transition-colors hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {editingTask ? "Guardar cambios" : "Crear Tarea"}
+              {state.loading ? "Guardando..." : editingTask ? "Guardar cambios" : "Crear Tarea"}
             </button>
           </form>
         </section>
         <section
           id="task-list"
+          aria-label="Lista de tareas"
+          aria-live="polite"
           className="mx-auto mt-6 w-full max-w-md rounded-xl bg-white p-6 shadow lg:mx-0 lg:mt-0 lg:max-w-none lg:justify-self-start"
         >
           {state.tasks.length <= 0 ? (
             <h2 className="py-12 text-center text-sm text-slate-500">
-              📝 <span className="block">Añade una tarea</span>
+              <span aria-hidden="true" className="text-2xl">📝</span>
+              <span className="block">Añade una tarea</span>
             </h2>
           ) : (
             <>
               <h2 className="mb-4 text-xl font-semibold text-slate-800">
                 Lista de tareas
               </h2>
-              <div>
+              <div role="list">
                 {state.tasks.map((task) => (
                   <div
                     key={task.id}
+                    role="listitem"
                     className="mb-3 rounded-lg border-l-4 border-emerald-500 bg-white p-4 shadow-sm"
                   >
                     <div className="font-semibold text-slate-800">
@@ -174,12 +187,14 @@ export function TasksPage() {
                       </div>
                       <div>
                         <button
+                          aria-label={`Eliminar tarea: ${task.title}`}
                           className="mt-3 inline-flex rounded-full px-2.5 py-1 text-xs font-medium"
                           onClick={() => deleteTask(task.id)}
                         >
                           Eliminar
                         </button>
                         <button
+                          aria-label={`Editar tarea: ${task.title}`}
                           className="mt-3 inline-flex rounded-full px-2.5 py-1 text-xs font-medium"
                           onClick={() => handleEdit(task)}
                         >

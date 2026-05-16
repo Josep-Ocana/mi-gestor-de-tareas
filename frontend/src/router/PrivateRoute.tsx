@@ -1,16 +1,19 @@
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/auth/useAuth";
+import Header from "../components/layout/Header";
 
 export function PrivateRoute({ children }: { children: React.ReactNode }) {
   const {
     state: { loading, user },
   } = useAuth();
-  // Está cargando: muestra un spinner o texto provisional
-  if (loading) return <div>Cargando...</div>;
 
-  // No hay usuario: redirige al login
+  if (loading) return <div role="status" aria-live="polite" aria-label="Cargando">Cargando...</div>;
   if (!user) return <Navigate to="/login" replace />;
 
-  // Hay usuario: muestra el contenido
-  return <>{children}</>;
+  return (
+    <>
+      <Header />
+      {children}
+    </>
+  );
 }

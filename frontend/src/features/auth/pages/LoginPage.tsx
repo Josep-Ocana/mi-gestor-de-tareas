@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { useAuth } from "../../../context/auth/useAuth";
 
@@ -42,7 +42,7 @@ export function LoginPage() {
   return (
     <main className="flex min-h-screen">
       <section className="hidden lg:flex w-1/2 bg-slate-900 flex-col justify-center px-12">
-        <span className="text-6xl text-white">✓</span>
+        <span aria-hidden="true" className="text-6xl text-white">✓</span>
         <h1 className="text-4xl font-bold text-white">Mi Gestor de Tareas</h1>
         <p className="mt-4 text-lg text-slate-300">
           Organiza tu día, conquista tus metas
@@ -56,6 +56,7 @@ export function LoginPage() {
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="w-full max-w-sm flex flex-col gap-4"
+          aria-busy={state.loading}
         >
           <div className="flex flex-col gap-1 mb-4">
             <h1 className="text-2xl font-bold text-slate-900">Bienvenido</h1>
@@ -63,27 +64,51 @@ export function LoginPage() {
               Inicia sesión para continuar
             </p>
           </div>
+
+          {state.error && (
+            <div role="alert" className="text-red-500 text-sm bg-red-50 p-3 rounded-lg">
+              {state.error}
+            </div>
+          )}
+
           <div className="flex flex-col gap-2">
+            <label htmlFor="email" className="text-sm font-medium text-slate-700">
+              Correo electrónico
+            </label>
             <input
               {...register("email")}
+              id="email"
+              type="email"
+              aria-required="true"
+              aria-invalid={errors.email ? "true" : undefined}
+              aria-describedby={errors.email ? "email-error" : undefined}
+              autoComplete="email"
               placeholder="tu@email.com"
               className="w-full border border-slate-300 rounded-lg px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
             {errors.email && (
-              <span className="text-red-500 text-sm">
+              <span id="email-error" role="alert" className="text-red-500 text-sm">
                 {errors.email.message}
               </span>
             )}
           </div>
           <div className="flex flex-col gap-2">
+            <label htmlFor="password" className="text-sm font-medium text-slate-700">
+              Contraseña
+            </label>
             <input
               {...register("password")}
+              id="password"
               type="password"
-              placeholder="Tu Password"
+              aria-required="true"
+              aria-invalid={errors.password ? "true" : undefined}
+              aria-describedby={errors.password ? "password-error" : undefined}
+              autoComplete="current-password"
+              placeholder="Tu contraseña"
               className="w-full border border-slate-300 rounded-lg px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
             {errors.password && (
-              <span className="text-red-500 text-sm">
+              <span id="password-error" role="alert" className="text-red-500 text-sm">
                 {errors.password.message}
               </span>
             )}
@@ -91,17 +116,19 @@ export function LoginPage() {
 
           <button
             type="submit"
-            className="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 transition-colors"
+            disabled={state.loading}
+            aria-busy={state.loading}
+            className="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Enviar
+            {state.loading ? "Iniciando sesión..." : "Enviar"}
           </button>
 
-          <a
-            href="/register"
+          <Link
+            to="/register"
             className="text-center text-sm text-indigo-600 hover:text-indigo-700"
           >
             Crear una cuenta
-          </a>
+          </Link>
         </form>
       </section>
     </main>
