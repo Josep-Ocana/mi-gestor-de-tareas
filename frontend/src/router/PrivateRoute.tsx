@@ -11,9 +11,9 @@ export function PrivateRoute({ children }: { children: React.ReactNode }) {
   if (!user) return <Navigate to="/login" replace />;
 
   return (
-    <>
+    <div className="min-h-screen dark:bg-gray-900">
       <Header />
       {children}
-    </>
+    </div>
   );
 }

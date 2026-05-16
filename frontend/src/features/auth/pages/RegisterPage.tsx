@@ -51,7 +51,7 @@ export function RegisterPage() {
   };
 
   return (
-    <main className="flex h-screen">
+    <main className="flex h-screen dark:bg-gray-900">
       <section className="hidden lg:flex w-1/2 bg-slate-900 flex-col justify-center px-12">
         <span aria-hidden="true" className="text-6xl text-white">✓</span>
         <h1 className="text-4xl font-bold text-white">Mi Gestor de Tareas</h1>
@@ -63,25 +63,25 @@ export function RegisterPage() {
         </p>
       </section>
 
-      <section className="flex min-h-screen w-full lg:w-1/2 bg-slate-50 flex-col justify-center items-center px-6 py-12 lg:min-h-0 lg:px-8 lg:py-0 overflow-y-auto">
+      <section className="flex min-h-screen w-full lg:w-1/2 bg-slate-50 flex-col justify-center items-center px-6 py-12 lg:min-h-0 lg:px-8 lg:py-0 overflow-y-auto dark:bg-gray-800">
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="w-full max-w-sm flex flex-col gap-4"
           aria-busy={state.loading}
         >
           <div className="flex flex-col gap-1 mb-4">
-            <h1 className="text-2xl font-bold text-slate-900">Crear cuenta</h1>
-            <p className="text-sm text-slate-500">Regístrate para empezar</p>
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-gray-100">Crear cuenta</h1>
+            <p className="text-sm text-slate-500 dark:text-gray-400">Regístrate para empezar</p>
           </div>
 
           {state.error && (
-            <div role="alert" className="text-red-500 text-sm bg-red-50 p-3 rounded-lg">
+            <div role="alert" className="text-red-500 text-sm bg-red-50 p-3 rounded-lg dark:bg-red-900/30 dark:text-red-400">
               {state.error}
             </div>
           )}
 
           <div className="flex flex-col gap-2">
-            <label htmlFor="register-email" className="text-sm font-medium text-slate-700">
+            <label htmlFor="register-email" className="text-sm font-medium text-slate-700 dark:text-gray-300">
               Correo electrónico
             </label>
             <input
@@ -93,7 +93,7 @@ export function RegisterPage() {
               aria-describedby={errors.email ? "register-email-error" : undefined}
               autoComplete="email"
               placeholder="tu@email.com"
-              className="w-full border border-slate-300 rounded-lg px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full border border-slate-300 rounded-lg px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
             />
             {errors.email && (
               <span id="register-email-error" role="alert" className="text-red-500 text-sm">
@@ -102,7 +102,7 @@ export function RegisterPage() {
             )}
           </div>
           <div className="flex flex-col gap-2">
-            <label htmlFor="register-password" className="text-sm font-medium text-slate-700">
+            <label htmlFor="register-password" className="text-sm font-medium text-slate-700 dark:text-gray-300">
               Contraseña
             </label>
             <input
@@ -114,7 +114,7 @@ export function RegisterPage() {
               aria-describedby={errors.password ? "register-password-error" : undefined}
               autoComplete="new-password"
               placeholder="Tu contraseña"
-              className="w-full border border-slate-300 rounded-lg px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full border border-slate-300 rounded-lg px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
             />
             {errors.password && (
               <span id="register-password-error" role="alert" className="text-red-500 text-sm">
@@ -123,7 +123,7 @@ export function RegisterPage() {
             )}
           </div>
           <div className="flex flex-col gap-2">
-            <label htmlFor="register-confirm" className="text-sm font-medium text-slate-700">
+            <label htmlFor="register-confirm" className="text-sm font-medium text-slate-700 dark:text-gray-300">
               Confirmar contraseña
             </label>
             <input
@@ -135,7 +135,7 @@ export function RegisterPage() {
               aria-describedby={errors.confirmPassword ? "register-confirm-error" : undefined}
               autoComplete="new-password"
               placeholder="Confirma tu contraseña"
-              className="w-full border border-slate-300 rounded-lg px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full border border-slate-300 rounded-lg px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
             />
             {errors.confirmPassword && (
               <span id="register-confirm-error" role="alert" className="text-red-500 text-sm">
@@ -155,7 +155,7 @@ export function RegisterPage() {
 
           <Link
             to="/login"
-            className="text-center text-sm text-indigo-600 hover:text-indigo-700"
+            className="text-center text-sm text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300"
           >
             Ya tengo una cuenta
           </Link>

@@ -1,1 +1,6 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+* {
+  transition: background-color 0.3s, border-color 0.3s;
+}
