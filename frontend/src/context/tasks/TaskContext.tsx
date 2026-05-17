@@ -29,7 +29,7 @@ export function TaskProvider({ children }: { children: React.ReactNode }) {
         dispatch({ type: "SET_LOADING" });
         const tasks = await fetchTasks();
         dispatch({ type: "SET_TASKS", payload: tasks });
-      } catch (error) {
+      } catch {
         dispatch({ type: "SET_ERROR", payload: "Error al cargar las tareas" });
       }
     };
@@ -42,7 +42,7 @@ export function TaskProvider({ children }: { children: React.ReactNode }) {
       dispatch({ type: "SET_LOADING" });
       const tasks = await fetchTasks();
       dispatch({ type: "SET_TASKS", payload: tasks });
-    } catch (error) {
+    } catch {
       dispatch({ type: "SET_ERROR", payload: "Error al cargar las tareas" });
     }
   };
@@ -53,6 +53,7 @@ export function TaskProvider({ children }: { children: React.ReactNode }) {
       dispatch({ type: "CREATE_TASK", payload: newTask });
     } catch (error) {
       dispatch({ type: "SET_ERROR", payload: "Error al crear la nueva tarea" });
+      throw error;
     }
   };
 
@@ -63,6 +64,7 @@ export function TaskProvider({ children }: { children: React.ReactNode }) {
       dispatch({ type: "UPDATE_TASK", payload: updatedTask });
     } catch (error) {
       dispatch({ type: "SET_ERROR", payload: "Error al actualizar la tarea" });
+      throw error;
     }
   };
 
@@ -73,6 +75,7 @@ export function TaskProvider({ children }: { children: React.ReactNode }) {
       dispatch({ type: "DELETE_TASK", payload: id });
     } catch (error) {
       dispatch({ type: "SET_ERROR", payload: "Error al eliminar tarea" });
+      throw error;
     }
   };
 

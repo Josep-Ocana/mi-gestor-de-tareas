@@ -31,11 +31,13 @@ export function LoginPage() {
   });
 
   const onSubmit = async (data: LoginFormData) => {
-    const { email, password } = data;
-    await signIn(email, password);
-    if (!state.error) {
+    try {
+      const { email, password } = data;
+      await signIn(email, password);
       reset();
       navigate("/tasks");
+    } catch {
+      // error ya se muestra via state.error
     }
   };
 

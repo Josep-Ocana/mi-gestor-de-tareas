@@ -33,7 +33,7 @@ export function ProjectProvider({ children }: { children: React.ReactNode }) {
         dispatch({ type: "SET_LOADING" });
         const projects = await fetchProjects();
         dispatch({ type: "SET_PROJECTS", payload: projects });
-      } catch (error) {
+      } catch {
         dispatch({
           type: "SET_ERROR",
           payload: "Error al cargar los proyectos",
@@ -49,7 +49,7 @@ export function ProjectProvider({ children }: { children: React.ReactNode }) {
       dispatch({ type: "SET_LOADING" });
       const projects = await fetchProjects();
       dispatch({ type: "SET_PROJECTS", payload: projects });
-    } catch (error) {
+    } catch {
       dispatch({ type: "SET_ERROR", payload: "Error al cargar los proyectos" });
     }
   };
@@ -64,6 +64,7 @@ export function ProjectProvider({ children }: { children: React.ReactNode }) {
         type: "SET_ERROR",
         payload: "Error al crear el nuevo projecto",
       });
+      throw error;
     }
   };
 
@@ -77,6 +78,7 @@ export function ProjectProvider({ children }: { children: React.ReactNode }) {
         type: "SET_ERROR",
         payload: "Error al actualizar el projecto",
       });
+      throw error;
     }
   };
 
@@ -90,6 +92,7 @@ export function ProjectProvider({ children }: { children: React.ReactNode }) {
         type: "SET_ERROR",
         payload: "Error al eliminar la el proyecto",
       });
+      throw error;
     }
   };
 

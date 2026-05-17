@@ -42,11 +42,13 @@ export function RegisterPage() {
   });
 
   const onSubmit = async (data: RegisterFormData) => {
-    const { email, password } = data;
-    await signUp(email, password);
-    if (!state.error) {
+    try {
+      const { email, password } = data;
+      await signUp(email, password);
       reset();
       navigate("/login");
+    } catch {
+      // error ya se muestra via state.error
     }
   };
 
