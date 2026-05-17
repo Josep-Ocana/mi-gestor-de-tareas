@@ -3,7 +3,6 @@ import type { Database } from "./supabase.types";
 import type { Tag } from "./tag.types";
 
 // Tipos base extraídos del esquema
-export type Profile = Database["public"]["Tables"]["profiles"]["Row"];
 export type Task = Database["public"]["Tables"]["tasks"]["Row"];
 export type TaskTag = Database["public"]["Tables"]["task_tags"]["Row"];
 

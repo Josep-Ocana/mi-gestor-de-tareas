@@ -1,3 +1,4 @@
+import type { Session } from "@supabase/supabase-js";
 import { createContext, useEffect, useReducer } from "react";
 import { supabase } from "../../services/supabase/client";
 import { authReducer } from "./auth.reducer";
@@ -9,6 +10,7 @@ export const AuthContext = createContext<AuthContextType | null>(null);
 // PROVIDER - useReducer, useEffect (recuperar sesión), funciones signIn, signOut, signUp
 const initialState: AuthState = {
   user: null,
+  profile: null,
   loading: true, // true porque al arrancar estamos comprobando la sesión
   error: null,
 };
@@ -18,53 +20,92 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // useEffect para recuperar la sesión al arrancar
   useEffect(() => {
-    // 1. Comprobar sesión activa al arrancar
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    let isMounted = true;
+
+    const fetchProfile = async (userId: string) => {
+      try {
+        const { data, error } = await supabase
+          .from("profiles")
+          .select("*")
+          .eq("id", userId)
+          .single();
+        if (error) throw error;
+        return data;
+      } catch (error) {
+        console.error("Error al obtener el perfil:", error);
+        return null;
+      }
+    };
+
+    const syncAuthState = async (session: Session | null) => {
+      if (!isMounted) return;
       if (session?.user) {
-        dispatch({ type: "SET_USER", payload: session.user });
+        const profile = await fetchProfile(session.user.id);
+        if (!isMounted) return;
+        dispatch({
+          type: "SET_USER",
+          payload: { user: session.user, profile },
+        });
       } else {
         dispatch({ type: "SIGN_OUT" });
       }
-    });
+    };
+
+    const initializeSession = async () => {
+      try {
+        const {
+          data: { session },
+          error,
+        } = await supabase.auth.getSession();
+        if (error) throw error;
+
+        await syncAuthState(session);
+      } catch (error) {
+        if (!isMounted) return;
+        console.error("Error al recuperar la sesión:", error);
+        dispatch({
+          type: "SET_ERROR",
+          payload: "Error al recuperar la sesión",
+        });
+      }
+    };
+
+    // 1. Comprobar sesión activa al arrancar
+    void initializeSession();
 
     // 2. Escuchar cambios de sesión
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session?.user) {
-        dispatch({ type: "SET_USER", payload: session.user });
-      } else {
-        dispatch({ type: "SIGN_OUT" });
-      }
+      void syncAuthState(session);
     });
 
-    // 3. Limpiar la siscripción al desmontar
-    return () => subscription.unsubscribe();
+    // 3. Limpiar la suscripción al desmontar
+    return () => {
+      isMounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
-  // funciones signIn, signOut, signUp
-  // Iniciar sesión
   const signIn = async (email: string, password: string) => {
     try {
       dispatch({ type: "SET_LOADING" });
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
       if (error) throw error;
-      if (data.user) dispatch({ type: "SET_USER", payload: data.user });
     } catch (error) {
       dispatch({ type: "SET_ERROR", payload: "Error al iniciar sesión" });
-      console.error(error);
+      throw error;
     }
   };
 
-  // Cerrar sesión
   const signOut = async () => {
     try {
       dispatch({ type: "SET_LOADING" });
-
-      await supabase.auth.signOut();
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
       dispatch({ type: "SIGN_OUT" });
     } catch (error) {
       dispatch({ type: "SET_ERROR", payload: "Error al cerrar sesión" });
@@ -72,20 +113,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  // Registrarse
   const signUp = async (email: string, password: string) => {
     try {
       dispatch({ type: "SET_LOADING" });
-
-      const { data, error } = await supabase.auth.signUp({
+      const { error } = await supabase.auth.signUp({
         email,
         password,
       });
       if (error) throw error;
-      if (data.user) dispatch({ type: "SET_USER", payload: data.user });
     } catch (error) {
       dispatch({ type: "SET_ERROR", payload: "Error al registrarse" });
-      console.error(error);
+      throw error;
     }
   };
 
