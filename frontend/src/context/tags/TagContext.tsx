@@ -29,7 +29,7 @@ export function TagProvider({ children }: { children: React.ReactNode }) {
         dispatch({ type: "SET_LOADING" });
         const tags = await getTagsService();
         dispatch({ type: "SET_TAGS", payload: tags });
-      } catch (error) {
+      } catch {
         dispatch({
           type: "SET_ERROR",
           payload: "Error al cargar las etiquetas",
@@ -45,7 +45,7 @@ export function TagProvider({ children }: { children: React.ReactNode }) {
       dispatch({ type: "SET_LOADING" });
       const tags = await getTagsService();
       dispatch({ type: "SET_TAGS", payload: tags });
-    } catch (error) {
+    } catch {
       dispatch({ type: "SET_ERROR", payload: "Error al cargar las etiquetas" });
     }
   };
@@ -55,7 +55,7 @@ export function TagProvider({ children }: { children: React.ReactNode }) {
       dispatch({ type: "SET_LOADING" });
       const newTag = await createTagService(tag);
       dispatch({ type: "CREATE_TAG", payload: newTag });
-    } catch (error) {
+    } catch {
       dispatch({ type: "SET_ERROR", payload: "Error al crear la etiqueta" });
     }
   };
@@ -65,7 +65,7 @@ export function TagProvider({ children }: { children: React.ReactNode }) {
       dispatch({ type: "SET_LOADING" });
       const updatedTag = await updateTagService(id, tag);
       dispatch({ type: "UPDATE_TAG", payload: updatedTag });
-    } catch (error) {
+    } catch {
       dispatch({
         type: "SET_ERROR",
         payload: "Error al actualizar la etiqueta",
@@ -78,7 +78,7 @@ export function TagProvider({ children }: { children: React.ReactNode }) {
       dispatch({ type: "SET_LOADING" });
       await deleteTagService(id);
       dispatch({ type: "DELETE_TAG", payload: id });
-    } catch (error) {
+    } catch {
       dispatch({ type: "SET_ERROR", payload: "Error al eliminar la etiqueta" });
     }
   };
