@@ -1,7 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { LoginPage } from "../features/auth/pages/LoginPage";
 import { RegisterPage } from "../features/auth/pages/RegisterPage";
-import { TasksPage } from "../features/auth/pages/TasksPage";
+import { TasksPage } from "../features/tasks/pages/TasksPage";
 import { PrivateRoute } from "./PrivateRoute";
 
 export function AppRouter() {

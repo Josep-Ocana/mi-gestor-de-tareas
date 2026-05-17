@@ -23,7 +23,7 @@ export function TasksPage() {
 
   useEffect(() => {
     getTasks();
-  }, []);
+  }, [getTasks]);
 
   const initialValues: TaskFormData = {
     title: "",
@@ -42,17 +42,19 @@ export function TasksPage() {
   });
 
   const onSubmit = async (data: TaskFormData) => {
-    if (editingTask) {
-      await updateTask(editingTask.id, data);
-    } else {
-      await createTask({
-        ...data,
-        owner_id: authState.user!.id,
-      });
-      if (!state.error) {
+    try {
+      if (editingTask) {
+        await updateTask(editingTask.id, data);
+      } else {
+        await createTask({
+          ...data,
+          owner_id: authState.user!.id,
+        });
         reset();
         setEditingTask(null);
       }
+    } catch {
+      // error ya se muestra via state.error
     }
   };
 
