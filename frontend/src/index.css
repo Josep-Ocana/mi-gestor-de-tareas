@@ -1,6 +1,43 @@
 @import "tailwindcss";
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 * {
-  transition: background-color 0.3s, border-color 0.3s;
+  transition:
+    background-color 0.3s,
+    border-color 0.3s;
+}
+
+@theme {
+  /* Modo Claro */
+  --color-primary: #183f94;
+  --color-primary-hover: #2563eb;
+  --color-secondary: #db7b1f;
+  --color-main-bg: #ffffff;
+  --color-card-bg: #ffffff;
+  --color-main-text: #111827;
+  --color-border: #e5e7eb;
+  --color-danger: #ef4444;
+  --color-danger-hover: #dc2626;
+  --color-success: #9eed93;
+  --color-success-hover: #226319;
+  --color-progress: #f5f39f;
+  --color-progress-hover: #915011;
+}
+
+/* Modo Oscuro*/
+.dark {
+  --color-primary: #60a5fa;
+  --color-primary-hover: #3b82f6;
+  --color-secondary: #9ca3af;
+  --color-main-bg: #111827;
+  --color-card-bg: #1f2937;
+  --color-main-text: #f3f4f6;
+  --color-border: #374151;
+  --color-danger: #f87171;
+  --color-danger-hover: #ef4444;
+  --color-success: #9eed93;
+  --color-success-hover: #226319;
+  --color-progress: #915011;
+  --color-progress-hover: #f5f39f;
 }

@@ -69,7 +69,7 @@ export function TasksPage() {
 
   return (
     <>
-      <main className="min-h-screen bg-slate-50 px-4 py-8 lg:grid lg:grid-cols-[minmax(0,28rem)_1fr] lg:gap-6 dark:bg-gray-900">
+      <main className="min-h-screen bg-main-bg px-4 py-8 lg:grid lg:grid-cols-[minmax(0,28rem)_1fr] lg:gap-6 dark:bg-gray-900">
         <section
           id="form"
           aria-label="Formulario de tarea"
@@ -82,7 +82,7 @@ export function TasksPage() {
             aria-busy={state.loading}
           >
             <div className="mb-6 flex flex-col gap-1">
-              <h1 className="text-2xl font-bold text-slate-900 dark:text-gray-100">
+              <h1 className="text-2xl font-bold text-main-900 dark:text-gray-100">
                 {editingTask ? "Editar tarea" : "Crea una nueva tarea"}
               </h1>
             </div>
@@ -98,7 +98,7 @@ export function TasksPage() {
                 aria-invalid={errors.title ? "true" : undefined}
                 aria-describedby={errors.title ? "title-error" : undefined}
                 placeholder="Añade un título"
-                className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
+                className="w-full rounded-lg border border-main-200 bg-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
               />
               {errors.title && (
                 <span
@@ -123,7 +123,7 @@ export function TasksPage() {
                   errors.description ? "description-error" : undefined
                 }
                 placeholder="Añade una descripción de la tarea"
-                className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
+                className="w-full rounded-lg border border-main-200 bg-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
               />
               {errors.description && (
                 <span
@@ -143,7 +143,7 @@ export function TasksPage() {
                 <select
                   id="status"
                   {...register("status")}
-                  className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
+                  className="w-full rounded-lg border border-main-200 bg-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
                 >
                   <option value="todo">Por hacer</option>
                   <option value="in_progress">En progreso</option>
@@ -156,7 +156,7 @@ export function TasksPage() {
               type="submit"
               disabled={state.loading}
               aria-busy={state.loading}
-              className="w-full rounded-lg bg-emerald-600 py-3 font-medium text-white transition-colors hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+              className="w-full rounded-lg bg-primary hover:bg-primary-hover py-3 font-medium text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             >
               {state.loading
                 ? "Guardando..."
@@ -173,7 +173,7 @@ export function TasksPage() {
           className="mx-auto mt-6 w-full max-w-md rounded-xl bg-white p-6 shadow lg:mx-0 lg:mt-0 lg:max-w-none lg:justify-self-start dark:bg-gray-800"
         >
           {state.tasks.length <= 0 ? (
-            <h2 className="py-12 text-center text-sm text-slate-500 dark:text-gray-400">
+            <h2 className="py-12 text-center text-sm text-main-500 dark:text-gray-400">
               <span aria-hidden="true" className="text-2xl">
                 📝
               </span>
@@ -181,7 +181,7 @@ export function TasksPage() {
             </h2>
           ) : (
             <>
-              <h2 className="mb-4 text-xl font-semibold text-slate-800 dark:text-gray-200">
+              <h2 className="mb-4 text-xl font-semibold text-main-800 dark:text-gray-200">
                 Lista de tareas
               </h2>
               <div role="list">

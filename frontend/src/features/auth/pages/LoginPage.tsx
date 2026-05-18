@@ -42,9 +42,11 @@ export function LoginPage() {
   };
 
   return (
-    <main className="flex min-h-screen dark:bg-gray-900">
+    <main className="flex min-h-screen dark:bg-main-bg">
       <section className="hidden lg:flex w-1/2 bg-slate-900 flex-col justify-center px-12">
-        <span aria-hidden="true" className="text-6xl text-white">✓</span>
+        <span aria-hidden="true" className="text-6xl text-white">
+          ✓
+        </span>
         <h1 className="text-4xl font-bold text-white">Mi Gestor de Tareas</h1>
         <p className="mt-4 text-lg text-slate-300">
           Organiza tu día, conquista tus metas
@@ -61,20 +63,28 @@ export function LoginPage() {
           aria-busy={state.loading}
         >
           <div className="flex flex-col gap-1 mb-4">
-            <h1 className="text-2xl font-bold text-slate-900 dark:text-gray-100">Bienvenido</h1>
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-gray-100">
+              Bienvenido
+            </h1>
             <p className="text-sm text-slate-500 dark:text-gray-400">
               Inicia sesión para continuar
             </p>
           </div>
 
           {state.error && (
-            <div role="alert" className="text-red-500 text-sm bg-red-50 p-3 rounded-lg dark:bg-red-900/30 dark:text-red-400">
+            <div
+              role="alert"
+              className="text-red-500 text-sm bg-red-50 p-3 rounded-lg dark:bg-red-900/30 dark:text-red-400"
+            >
               {state.error}
             </div>
           )}
 
           <div className="flex flex-col gap-2">
-            <label htmlFor="email" className="text-sm font-medium text-slate-700 dark:text-gray-300">
+            <label
+              htmlFor="email"
+              className="text-sm font-medium text-slate-700 dark:text-gray-300"
+            >
               Correo electrónico
             </label>
             <input
@@ -89,13 +99,20 @@ export function LoginPage() {
               className="w-full border border-slate-300 rounded-lg px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
             />
             {errors.email && (
-              <span id="email-error" role="alert" className="text-red-500 text-sm">
+              <span
+                id="email-error"
+                role="alert"
+                className="text-red-500 text-sm"
+              >
                 {errors.email.message}
               </span>
             )}
           </div>
           <div className="flex flex-col gap-2">
-            <label htmlFor="password" className="text-sm font-medium text-slate-700 dark:text-gray-300">
+            <label
+              htmlFor="password"
+              className="text-sm font-medium text-slate-700 dark:text-gray-300"
+            >
               Contraseña
             </label>
             <input
@@ -110,7 +127,11 @@ export function LoginPage() {
               className="w-full border border-slate-300 rounded-lg px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
             />
             {errors.password && (
-              <span id="password-error" role="alert" className="text-red-500 text-sm">
+              <span
+                id="password-error"
+                role="alert"
+                className="text-red-500 text-sm"
+              >
                 {errors.password.message}
               </span>
             )}

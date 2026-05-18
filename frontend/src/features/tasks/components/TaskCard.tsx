@@ -15,7 +15,7 @@ export const TaskCard = ({ task, onEdit }: TaskCardProps) => {
       <div
         key={task.id}
         role="listitem"
-        className="mb-3 rounded-lg border-l-4 border-emerald-500 bg-white p-4 shadow-sm dark:bg-gray-700"
+        className="mb-3 rounded-lg border-l-4 border-primary bg-white p-4 shadow-sm dark:bg-gray-700"
       >
         <div className="font-semibold text-slate-800 dark:text-gray-100">
           {task.title}
@@ -27,9 +27,9 @@ export const TaskCard = ({ task, onEdit }: TaskCardProps) => {
           <div
             className={`mt-3 inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${
               task.status === "done"
-                ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300"
+                ? "bg-success text-success-hover dark:bg-success-hover dark:text-success"
                 : task.status === "in_progress"
-                  ? "bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300"
+                  ? "bg-progress text-progress-hover dark:bg-progress dark:text-progress-hover"
                   : "bg-slate-100 text-slate-700 dark:bg-gray-600 dark:text-gray-300"
             }`}
           >
@@ -38,14 +38,14 @@ export const TaskCard = ({ task, onEdit }: TaskCardProps) => {
           <div>
             <button
               aria-label={`Eliminar tarea: ${task.title}`}
-              className="mt-3 inline-flex rounded-full bg-red-500 hover:bg-red-700  px-2.5 py-1 text-xs font-medium text-gray-300 cursor-pointer"
+              className="mt-3 inline-flex rounded-full bg-danger hover:bg-danger-hover  px-2.5 py-1 text-xs font-medium text-gray-300 cursor-pointer"
               onClick={() => deleteTask(task.id)}
             >
               Eliminar
             </button>
             <button
               aria-label={`Editar tarea: ${task.title}`}
-              className="mt-3 inline-flex rounded-full bg-emerald-700 hover:bg-emerald-800 px-2.5 py-1 text-xs font-medium text-gray-300 cursor-pointer"
+              className="mt-3 inline-flex rounded-full bg-primary hover:bg-primary-hover px-2.5 py-1 text-xs font-medium text-gray-300 cursor-pointer"
               onClick={() => onEdit(task)}
             >
               Actualizar
