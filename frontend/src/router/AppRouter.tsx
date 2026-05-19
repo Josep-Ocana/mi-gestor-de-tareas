@@ -1,6 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { LoginPage } from "../features/auth/pages/LoginPage";
 import { RegisterPage } from "../features/auth/pages/RegisterPage";
+import { ProjectsPage } from "../features/projects/pages/ProjectsPage";
 import { TasksPage } from "../features/tasks/pages/TasksPage";
 import { PrivateRoute } from "./PrivateRoute";
 
@@ -18,6 +19,14 @@ export function AppRouter() {
           element={
             <PrivateRoute>
               <TasksPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/projects"
+          element={
+            <PrivateRoute>
+              <ProjectsPage />
             </PrivateRoute>
           }
         />
