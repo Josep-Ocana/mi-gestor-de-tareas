@@ -43,30 +43,30 @@ export function LoginPage() {
 
   return (
     <main className="flex min-h-screen dark:bg-main-bg">
-      <section className="hidden lg:flex w-1/2 bg-slate-900 flex-col justify-center px-12">
+      <section className="hidden lg:flex w-1/2 bg-main-text dark:bg-main-bg flex-col justify-center px-12">
         <span aria-hidden="true" className="text-6xl text-white">
           ✓
         </span>
         <h1 className="text-4xl font-bold text-white">Mi Gestor de Tareas</h1>
-        <p className="mt-4 text-lg text-slate-300">
+        <p className="mt-4 text-lg text-white/70">
           Organiza tu día, conquista tus metas
         </p>
-        <p className="mt-8 text-sm text-slate-400">
+        <p className="mt-8 text-sm text-white/60">
           Cada tarea completada te acerca a lo importante.
         </p>
       </section>
 
-      <section className="flex w-full lg:w-1/2 bg-slate-50 flex-col justify-center items-center px-6 py-12 lg:min-h-0 lg:px-8 lg:py-0 overflow-y-auto dark:bg-gray-800">
+      <section className="flex w-full lg:w-1/2 bg-main-bg flex-col justify-center items-center px-6 py-12 lg:min-h-0 lg:px-8 lg:py-0 overflow-y-auto dark:bg-card-bg">
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="w-full max-w-sm flex flex-col gap-4"
           aria-busy={state.loading}
         >
           <div className="flex flex-col gap-1 mb-4">
-            <h1 className="text-2xl font-bold text-slate-900 dark:text-gray-100">
+            <h1 className="text-2xl font-bold text-main-text">
               Bienvenido
             </h1>
-            <p className="text-sm text-slate-500 dark:text-gray-400">
+            <p className="text-sm text-main-text/60">
               Inicia sesión para continuar
             </p>
           </div>
@@ -74,7 +74,7 @@ export function LoginPage() {
           {state.error && (
             <div
               role="alert"
-              className="text-red-500 text-sm bg-red-50 p-3 rounded-lg dark:bg-red-900/30 dark:text-red-400"
+              className="text-danger text-sm bg-danger/10 p-3 rounded-lg dark:bg-danger/20"
             >
               {state.error}
             </div>
@@ -83,7 +83,7 @@ export function LoginPage() {
           <div className="flex flex-col gap-2">
             <label
               htmlFor="email"
-              className="text-sm font-medium text-slate-700 dark:text-gray-300"
+              className="text-sm font-medium text-main-text/80"
             >
               Correo electrónico
             </label>
@@ -96,13 +96,13 @@ export function LoginPage() {
               aria-describedby={errors.email ? "email-error" : undefined}
               autoComplete="email"
               placeholder="tu@email.com"
-              className="w-full border border-slate-300 rounded-lg px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
+              className="w-full rounded-lg border border-border bg-card-bg px-4 py-3 text-main-text focus:outline-none focus:ring-2 focus:ring-primary"
             />
             {errors.email && (
               <span
                 id="email-error"
                 role="alert"
-                className="text-red-500 text-sm"
+                className="text-danger text-sm"
               >
                 {errors.email.message}
               </span>
@@ -111,7 +111,7 @@ export function LoginPage() {
           <div className="flex flex-col gap-2">
             <label
               htmlFor="password"
-              className="text-sm font-medium text-slate-700 dark:text-gray-300"
+              className="text-sm font-medium text-main-text/80"
             >
               Contraseña
             </label>
@@ -124,13 +124,13 @@ export function LoginPage() {
               aria-describedby={errors.password ? "password-error" : undefined}
               autoComplete="current-password"
               placeholder="Tu contraseña"
-              className="w-full border border-slate-300 rounded-lg px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
+              className="w-full rounded-lg border border-border bg-card-bg px-4 py-3 text-main-text focus:outline-none focus:ring-2 focus:ring-primary"
             />
             {errors.password && (
               <span
                 id="password-error"
                 role="alert"
-                className="text-red-500 text-sm"
+                className="text-danger text-sm"
               >
                 {errors.password.message}
               </span>
@@ -141,14 +141,14 @@ export function LoginPage() {
             type="submit"
             disabled={state.loading}
             aria-busy={state.loading}
-            className="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-primary text-white py-3 rounded-lg font-medium hover:bg-primary-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {state.loading ? "Iniciando sesión..." : "Enviar"}
           </button>
 
           <Link
             to="/register"
-            className="text-center text-sm text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300"
+            className="text-center text-sm text-primary hover:text-primary-hover"
           >
             Crear una cuenta
           </Link>
