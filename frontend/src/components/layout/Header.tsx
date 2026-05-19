@@ -1,5 +1,4 @@
 import { CheckSquare, LogOut, User } from "lucide-react";
-import { NavLink } from "react-router-dom";
 import { useAuth } from "../../context/auth/useAuth";
 import { ThemeToggle } from "../ui/ThemeToggle/ThemeToggle";
 
@@ -20,40 +19,18 @@ export default function Header() {
         </h1>
       </div>
 
-      {/* NAVEGACIÓN PRINCIPAL */}
       <nav
         aria-label="Navegación principal"
         className="flex items-center gap-4"
       >
-        <NavLink
-          to="/tasks"
-          className={({ isActive }) =>
-            `text-sm font-medium px-3 py-2 rounded-lg transition-colors ${
-              isActive
-                ? "bg-primary/10 text-primary"
-                : "text-main-text/70 hover:text-main-text hover:bg-border"
-            }`
-          }
-        >
-          Tareas
-        </NavLink>
-        <NavLink
-          to="/projects"
-          className={({ isActive }) =>
-            `text-sm font-medium px-3 py-2 rounded-lg transition-colors ${
-              isActive
-                ? "bg-primary/10 text-primary"
-                : "text-main-text/70 hover:text-main-text hover:bg-border"
-            }`
-          }
-        >
-          Proyectos
-        </NavLink>
-
         <ThemeToggle />
         <div className="flex items-center gap-3 pr-4 border-r border-border">
           <div className="w-10 h-10 bg-border rounded-full flex items-center justify-center border border-border">
-            <User aria-hidden="true" size={20} className="text-main-text/70" />
+            <User
+              aria-hidden="true"
+              size={20}
+              className="text-main-text/70"
+            />
           </div>
           <span className="text-sm font-medium text-main-text">
             {user?.email ?? "Usuario"}
