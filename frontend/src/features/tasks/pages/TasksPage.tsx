@@ -58,7 +58,7 @@ export function TasksPage() {
           owner_id: authState.user!.id,
         });
       }
-      reset();
+      reset(initialValues);
       setEditingTask(null);
     } catch {
       // error ya se muestra via state.error
