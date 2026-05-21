@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import { useAuth } from "../../../context/auth/useAuth";
+import { useProject } from "../../../context/projects/useProject";
 import { useTask } from "../../../context/tasks/useTask";
 import type { Task } from "../../../types/task.types";
 import { TaskCard } from "../components/TaskCard";
@@ -11,6 +12,7 @@ const taskSchema = z.object({
   title: z.string().min(1, "El título es obligatorio"),
   description: z.string().optional(),
   status: z.enum(["todo", "in_progress", "done"]),
+  project_id: z.string().optional(),
 });
 
 type TaskFormData = z.infer<typeof taskSchema>;
@@ -18,6 +20,9 @@ type TaskFormData = z.infer<typeof taskSchema>;
 export function TasksPage() {
   const { state, getTasks, createTask, updateTask } = useTask();
   const { state: authState } = useAuth();
+  const {
+    state: { projects },
+  } = useProject();
 
   const [editingTask, setEditingTask] = useState<Task | null>(null);
 
@@ -29,6 +34,7 @@ export function TasksPage() {
     title: "",
     description: "",
     status: "todo",
+    project_id: "",
   };
 
   const {
@@ -48,11 +54,12 @@ export function TasksPage() {
       } else {
         await createTask({
           ...data,
+          project_id: data.project_id || null,
           owner_id: authState.user!.id,
         });
-        reset();
-        setEditingTask(null);
       }
+      reset();
+      setEditingTask(null);
     } catch {
       // error ya se muestra via state.error
     }
@@ -64,6 +71,7 @@ export function TasksPage() {
       title: task.title,
       description: task.description ?? "",
       status: task.status as "todo",
+      project_id: task.project_id ?? "",
     });
   };
 
@@ -136,6 +144,20 @@ export function TasksPage() {
                 </span>
               )}
             </div>
+            <div className="mb-4 flex flex-col gap-2">
+              <label htmlFor="project" className="dark:text-main-text/80">
+                Proyecto:
+              </label>
+              <select id="project" {...register("project_id")}>
+                <option value="">Sin Proyecto</option>
+                {projects.map((project) => (
+                  <option key={project.id} value={project.id}>
+                    {project.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
             {editingTask && (
               <div className="mb-6 flex flex-col gap-2">
                 <label htmlFor="status" className="dark:text-main-text/80">
