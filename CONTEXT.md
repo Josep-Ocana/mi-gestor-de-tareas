@@ -20,56 +20,72 @@
 mi-gestor-de-tareas/
 ├── frontend/
 │   ├── src/
-│   │   ├── assets/
 │   │   ├── components/
-│   │   │   ├── ui/
-│   │   │   │   ├── Button/
-│   │   │   │   ├── Input/
-│   │   │   │   └── Modal/
-│   │   │   └── layout/
-│   │   ├── features/
-│   │   │   ├── auth/
-│   │   │   │   ├── components/
-│   │   │   │   ├── hooks/
-│   │   │   │   └── pages/
-│   │   │   │       ├── LoginPage.tsx ✅
-│   │   │   │       └── RegisterPage.tsx ✅
-│   │   │   └── tasks/
-│   │   │       ├── components/
-│   │   │       ├── hooks/
-│   │   │       └── pages/
-│   │   │           └── TasksPage.tsx ✅
-│   │   ├── services/
-│   │   │   ├── supabase/
-│   │   │   │   └── client.ts
-│   │   │   ├── tasks.service.ts ✅
-│   │   │   └── projects.service.ts ✅
+│   │   │   ├── layout/
+│   │   │   │   └── Header.tsx ✅
+│   │   │   └── ui/
+│   │   │       └── ThemeToggle/
+│   │   │           └── ThemeToggle.tsx ✅
 │   │   ├── context/
 │   │   │   ├── auth/
 │   │   │   │   ├── auth.types.ts ✅
 │   │   │   │   ├── auth.reducer.ts ✅
 │   │   │   │   ├── AuthContext.tsx ✅
 │   │   │   │   └── useAuth.ts ✅
+│   │   │   ├── projects/
+│   │   │   │   ├── projects.types.ts ✅
+│   │   │   │   ├── projects.reducer.ts ✅
+│   │   │   │   ├── ProjectContext.tsx ✅
+│   │   │   │   └── useProject.ts ✅
+│   │   │   ├── tags/
+│   │   │   │   ├── tags.types.ts ✅
+│   │   │   │   ├── tags.reducer.ts ✅
+│   │   │   │   ├── TagContext.tsx ✅
+desperate│   │   │   └── useTag.ts ✅
 │   │   │   ├── tasks/
 │   │   │   │   ├── tasks.types.ts ✅
 │   │   │   │   ├── tasks.reducer.ts ✅
 │   │   │   │   ├── TaskContext.tsx ✅
 │   │   │   │   └── useTask.ts ✅
-│   │   │   └── projects/
-│   │   │       ├── projects.types.ts ✅
-│   │   │       ├── projects.reducer.ts ✅
-│   │   │       ├── ProjectContext.tsx ✅
-│   │   │       └── useProject.ts ✅
+│   │   │   └── theme/
+│   │   │       ├── theme.types.ts ✅
+│   │   │       ├── theme.reducer.ts ✅
+│   │   │       ├── ThemeContext.tsx ✅
+│   │   │       └── useTheme.ts ✅
+│   │   ├── features/
+│   │   │   ├── auth/
+│   │   │   │   └── pages/
+│   │   │   │       ├── LoginPage.tsx ✅
+│   │   │   │       └── RegisterPage.tsx ✅
+│   │   │   ├── projects/
+│   │   │   │   ├── components/
+│   │   │   │   │   └── ProjectCard.tsx ✅
+│   │   │   │   └── pages/
+│   │   │   │       └── ProjectsPage.tsx ✅
+│   │   │   └── tasks/
+│   │   │       ├── components/
+│   │   │       │   └── TaskCard.tsx ✅
+│   │   │       └── pages/
+│   │   │           └── TasksPage.tsx ✅
+│   │   ├── router/
+│   │   │   ├── AppRouter.tsx ✅
+│   │   │   └── PrivateRoute.tsx ✅
+│   │   ├── services/
+│   │   │   ├── supabase/
+│   │   │   │   └── client.ts ✅
+│   │   │   ├── projects.service.ts ✅
+│   │   │   ├── tags.service.ts ✅
+│   │   │   └── tasks.service.ts ✅
 │   │   ├── types/
-│   │   │   ├── supabase.types.ts   ← generado automáticamente
-│   │   │   ├── task.types.ts
-│   │   │   └── project.types.ts ✅
-│   │   ├── hooks/
+│   │   │   ├── supabase.types.ts ✅  ← generado automáticamente
+│   │   │   ├── profile.types.ts ✅
+│   │   │   ├── project.types.ts ✅
+│   │   │   ├── tag.types.ts ✅
+│   │   │   └── task.types.ts ✅
 │   │   ├── utils/
 │   │   │   └── task.utils.ts ✅
-│   │   └── router/
-│   │       ├── AppRouter.tsx
-│   │       └── PrivateRoute.tsx
+│   │   ├── index.css
+│   │   └── main.tsx ✅
 │   ├── .env.local                  ← no va al repo
 │   ├── .env.example                ← sí va al repo
 │   └── package.json
@@ -81,7 +97,6 @@ mi-gestor-de-tareas/
 │       ├── functions/
 │       │   ├── on-user-created/
 │       │   └── notify-due-tasks/
-│       ├── temp/
 │       └── config.toml
 └── shared/
     ├── types/
@@ -97,462 +112,46 @@ mi-gestor-de-tareas/
 - `profiles` — extiende auth.users con username y avatar_url
 - `projects` — proyectos del usuario
 - `tags` — etiquetas del usuario
-- `tasks` — tareas con autorreferencia para subtareas
+- `tasks` — tareas con autorreferencia para subtareas, `project_id` nullable
 - `task_tags` — relación many to many entre tasks y tags
 
 ### Decisiones importantes
 
 - RLS activado en todas las tablas
-- Trigger `handle_new_user` — crea perfil automáticamente al registrarse (username = email provisional)
+- Trigger `handle_new_user` — crea perfil automáticamente al registrarse
 - Trigger `handle_updated_at` — actualiza updated_at automáticamente en tasks
 - `status` y `priority` tienen `NOT NULL` desde la segunda migración
-- Migración aplicada con `supabase db push`
+- `project_id` en tasks es nullable — los proyectos son opcionales
 - Tipos generados con `supabase gen types typescript --project-id REF --schema public`
 - Comando ejecutar desde la raíz del proyecto, no desde backend/supabase/
 
 ---
 
-## Archivos importantes
+## Arquitectura del router
 
-### `frontend/src/services/supabase/client.ts`
-
-```typescript
-import { createClient } from "@supabase/supabase-js";
-
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+```
+AppRouter
+├── /login           → LoginPage (pública)
+├── /register        → RegisterPage (pública)
+└── PrivateRoute
+    └── PrivateLayout (Header + Outlet)
+        ├── /tasks   → TasksPage
+        └── /projects → ProjectsPage
 ```
 
-### `frontend/src/services/tasks.service.ts`
-
-```typescript
-import { supabase } from "./supabase/client";
-import type { Task, InsertTask, UpdateTask } from "../types/task.types";
-
-export const getTasks = async (): Promise<Task[]> => {
-  const { data, error } = await supabase.from("tasks").select("*");
-  if (error) throw error;
-  return data ?? [];
-};
-
-export const getTaskById = async (id: Task["id"]): Promise<Task | null> => {
-  const { data, error } = await supabase
-    .from("tasks")
-    .select("*")
-    .eq("id", id)
-    .single();
-  if (error) throw error;
-  return data;
-};
-
-export const createTask = async (task: InsertTask): Promise<Task> => {
-  const { data, error } = await supabase
-    .from("tasks")
-    .insert(task)
-    .select()
-    .single();
-  if (error) throw error;
-  return data!;
-};
-
-export const updateTask = async (
-  id: Task["id"],
-  task: UpdateTask,
-): Promise<Task> => {
-  const { data, error } = await supabase
-    .from("tasks")
-    .update(task)
-    .eq("id", id)
-    .select()
-    .single();
-  if (error) throw error;
-  return data!;
-};
-
-export const deleteTask = async (id: Task["id"]): Promise<void> => {
-  const { error } = await supabase.from("tasks").delete().eq("id", id);
-  if (error) throw error;
-};
-```
-
-### `frontend/src/services/projects.service.ts`
-
-```typescript
-import { supabase } from "./supabase/client";
-import type {
-  Project,
-  InsertProject,
-  UpdateProject,
-} from "../types/project.types";
-
-export const getProjects = async (): Promise<Project[]> => {
-  const { data, error } = await supabase.from("projects").select("*");
-  if (error) throw error;
-  return data ?? [];
-};
-
-export const getProjectById = async (
-  id: Project["id"],
-): Promise<Project | null> => {
-  const { data, error } = await supabase
-    .from("projects")
-    .select("*")
-    .eq("id", id)
-    .single();
-  if (error) throw error;
-  return data;
-};
-
-export const createProject = async (
-  project: InsertProject,
-): Promise<Project> => {
-  const { data, error } = await supabase
-    .from("projects")
-    .insert(project)
-    .select()
-    .single();
-  if (error) throw error;
-  return data!;
-};
-
-export const updateProject = async (
-  id: Project["id"],
-  project: UpdateProject,
-): Promise<Project> => {
-  const { data, error } = await supabase
-    .from("projects")
-    .update(project)
-    .eq("id", id)
-    .select()
-    .single();
-  if (error) throw error;
-  return data!;
-};
-
-export const deleteProject = async (id: Project["id"]): Promise<void> => {
-  const { error } = await supabase.from("projects").delete().eq("id", id);
-  if (error) throw error;
-};
-```
-
-### `frontend/src/types/task.types.ts`
-
-```typescript
-import type { Database } from "./supabase.types";
-import type { Project } from "./project.types";
-
-export type Task = Database["public"]["Tables"]["tasks"]["Row"];
-export type InsertTask = Database["public"]["Tables"]["tasks"]["Insert"];
-export type UpdateTask = Database["public"]["Tables"]["tasks"]["Update"];
-
-export type TaskWithTags = Task & { tags: Tag[] };
-export type TaskWithProject = Task & { project: Project | null };
-export type TaskComplete = Task & {
-  tags: Tag[];
-  project: Project | null;
-  subtasks: Task[];
-};
-
-export type TaskStatus = "todo" | "in_progress" | "done";
-export type TaskPriority = "low" | "medium" | "high";
-```
-
-### `frontend/src/types/project.types.ts`
-
-```typescript
-import type { Database } from "./supabase.types";
-
-export type Project = Database["public"]["Tables"]["projects"]["Row"];
-export type InsertProject = Database["public"]["Tables"]["projects"]["Insert"];
-export type UpdateProject = Database["public"]["Tables"]["projects"]["Update"];
-```
-
-### `frontend/src/utils/task.utils.ts`
-
-```typescript
-export const statusLabels: Record<string, string> = {
-  todo: "Por hacer",
-  in_progress: "En progreso",
-  done: "Completada",
-};
-
-export const priorityLabels: Record<string, string> = {
-  low: "Baja",
-  medium: "Media",
-  high: "Alta",
-};
-```
-
-### `frontend/src/context/auth/auth.types.ts`
-
-```typescript
-import type { User } from "@supabase/supabase-js";
-
-export type AuthState = {
-  user: User | null;
-  loading: boolean;
-  error: string | null;
-};
-
-export type AuthAction =
-  | { type: "SET_USER"; payload: User }
-  | { type: "SIGN_OUT" }
-  | { type: "SET_LOADING" }
-  | { type: "SET_ERROR"; payload: string };
-
-export type AuthContextType = {
-  state: AuthState;
-  signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string) => Promise<void>;
-  signOut: () => Promise<void>;
-};
-```
-
-### `frontend/src/context/auth/auth.reducer.ts`
-
-```typescript
-import type { AuthAction, AuthState } from "./auth.types";
-
-export function authReducer(state: AuthState, action: AuthAction): AuthState {
-  switch (action.type) {
-    case "SET_USER":
-      return { ...state, user: action.payload, loading: false, error: null };
-    case "SIGN_OUT":
-      return { ...state, user: null, loading: false, error: null };
-    case "SET_LOADING":
-      return { ...state, loading: true, error: null };
-    case "SET_ERROR":
-      return { ...state, loading: false, error: action.payload };
-    default:
-      return state;
-  }
-}
-```
-
-### `frontend/src/context/auth/AuthContext.tsx`
-
-```typescript
-import { createContext, useEffect, useReducer } from 'react'
-import { supabase } from '../../services/supabase/client'
-import { authReducer } from './auth.reducer'
-import type { AuthContextType, AuthState } from './auth.types'
-
-export const AuthContext = createContext<AuthContextType | null>(null)
-
-const initialState: AuthState = { user: null, loading: true, error: null }
-
-export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [state, dispatch] = useReducer(authReducer, initialState)
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user) dispatch({ type: 'SET_USER', payload: session.user })
-      else dispatch({ type: 'SIGN_OUT' })
-    })
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        if (session?.user) dispatch({ type: 'SET_USER', payload: session.user })
-        else dispatch({ type: 'SIGN_OUT' })
-      }
-    )
-    return () => subscription.unsubscribe()
-  }, [])
-
-  const signIn = async (email: string, password: string) => {
-    try {
-      dispatch({ type: 'SET_LOADING' })
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password })
-      if (error) throw error
-      if (data.user) dispatch({ type: 'SET_USER', payload: data.user })
-    } catch (error) {
-      dispatch({ type: 'SET_ERROR', payload: 'Error al iniciar sesión' })
-    }
-  }
-
-  const signUp = async (email: string, password: string) => {
-    try {
-      dispatch({ type: 'SET_LOADING' })
-      const { data, error } = await supabase.auth.signUp({ email, password })
-      if (error) throw error
-      if (data.user) dispatch({ type: 'SET_USER', payload: data.user })
-    } catch (error) {
-      dispatch({ type: 'SET_ERROR', payload: 'Error al registrarse' })
-    }
-  }
-
-  const signOut = async () => {
-    try {
-      dispatch({ type: 'SET_LOADING' })
-      await supabase.auth.signOut()
-      dispatch({ type: 'SIGN_OUT' })
-    } catch (error) {
-      dispatch({ type: 'SET_ERROR', payload: 'Error al cerrar sesión' })
-    }
-  }
-
-  return (
-    <AuthContext.Provider value={{ state, signIn, signUp, signOut }}>
-      {children}
-    </AuthContext.Provider>
-  )
-}
-```
-
-### `frontend/src/context/auth/useAuth.ts`
-
-```typescript
-import { useContext } from "react";
-import { AuthContext } from "./AuthContext";
-
-export function useAuth() {
-  const context = useContext(AuthContext);
-  if (!context) throw new Error("useAuth debe usarse dentro de AuthProvider");
-  return context;
-}
-```
-
-### `frontend/src/context/tasks/tasks.types.ts`
-
-```typescript
-import type { InsertTask, Task, UpdateTask } from "../../types/task.types";
-
-export type TaskState = {
-  tasks: Task[];
-  loading: boolean;
-  error: string | null;
-};
-
-export type TaskAction =
-  | { type: "SET_TASKS"; payload: Task[] }
-  | { type: "CREATE_TASK"; payload: Task }
-  | { type: "UPDATE_TASK"; payload: Task }
-  | { type: "DELETE_TASK"; payload: Task["id"] }
-  | { type: "SET_LOADING" }
-  | { type: "SET_ERROR"; payload: string };
-
-export type TaskContextType = {
-  state: TaskState;
-  getTasks: () => Promise<void>;
-  createTask: (task: InsertTask) => Promise<void>;
-  updateTask: (id: Task["id"], task: UpdateTask) => Promise<void>;
-  deleteTask: (id: Task["id"]) => Promise<void>;
-};
-```
-
-### `frontend/src/context/projects/projects.types.ts`
-
-```typescript
-import type {
-  InsertProject,
-  Project,
-  UpdateProject,
-} from "../../types/project.types";
-
-export type ProjectState = {
-  projects: Project[];
-  loading: boolean;
-  error: string | null;
-};
-
-export type ProjectAction =
-  | { type: "SET_PROJECTS"; payload: Project[] }
-  | { type: "CREATE_PROJECT"; payload: Project }
-  | { type: "UPDATE_PROJECT"; payload: Project }
-  | { type: "DELETE_PROJECT"; payload: Project["id"] }
-  | { type: "SET_LOADING" }
-  | { type: "SET_ERROR"; payload: string };
-
-export type ProjectContextType = {
-  state: ProjectState;
-  getProjects: () => Promise<void>;
-  createProject: (project: InsertProject) => Promise<void>;
-  updateProject: (id: Project["id"], project: UpdateProject) => Promise<void>;
-  deleteProject: (id: Project["id"]) => Promise<void>;
-};
-```
-
-### `frontend/src/main.tsx`
-
-```typescript
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import { AppRouter } from './router/AppRouter'
-import { AuthProvider } from './context/auth/AuthContext'
-import { TaskProvider } from './context/tasks/TaskContext'
-import { ProjectProvider } from './context/projects/ProjectContext'
-
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <AuthProvider>
-      <TaskProvider>
-        <ProjectProvider>
-          <AppRouter />
-        </ProjectProvider>
-      </TaskProvider>
-    </AuthProvider>
-  </StrictMode>
-)
-```
-
-### `frontend/src/router/AppRouter.tsx`
-
-```typescript
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
-import { LoginPage } from '../features/auth/pages/LoginPage'
-import { RegisterPage } from '../features/auth/pages/RegisterPage'
-import { TasksPage } from '../features/tasks/pages/TasksPage'
-import { PrivateRoute } from './PrivateRoute'
-
-export function AppRouter() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/tasks" element={
-          <PrivateRoute>
-            <TasksPage />
-          </PrivateRoute>
-        } />
-        <Route path="*" element={<Navigate to="/tasks" />} />
-      </Routes>
-    </BrowserRouter>
-  )
-}
-```
+- `PrivateRoute` — guarda de autenticación, redirige a /login si no hay usuario
+- `PrivateLayout` — layout con Header para rutas privadas, usa `Outlet` de react-router
+- `PrivateLayout` debe estar **fuera** de `AppRouter`, no dentro
 
 ---
 
-## Commits realizados
+## Decisiones de diseño
 
-```
-chore(backend): create folder structure and seed file
-feat(backend): add initial schema migration with RLS
-feat(frontend): install core dependencies
-feat(frontend): configure tailwindcss v4
-chore(frontend): create folder structure
-feat(frontend): add supabase and task types
-feat(frontend): add auth context with useReducer
-feat(frontend): add router with public and private routes
-feat(frontend): add login page with form validation and auth
-feat(frontend): add register page with password confirmation
-style(frontend): add split screen layout and responsive fix to auth pages
-feat(frontend): add tasks service with CRUD operations
-feat(frontend): add tasks context with useReducer
-feat(frontend): add tasks page with create and list functionality
-style(frontend): add tasks page styles and status translations
-feat(backend): add not null constraints to status and priority
-feat(frontend): add update and delete task functionality
-fix(frontend): fix form reset on task edit
-fix(frontend): add htmlFor and id attributes to form labels
-refactor(frontend): split auth context into separate files
-refactor(frontend): split tasks context into separate files
-feat(frontend): add projects service and context
-```
+- **Proyectos opcionales** — `project_id` en tasks es nullable. El usuario puede crear tareas sin proyecto y asignarlas después
+- **Tags inline** — las etiquetas se gestionarán desde el formulario de tareas, no desde una página separada
+- **Sin status en proyectos** — los proyectos no tienen estado propio, el estado lo comunican sus tareas
+- **ThemeToggle** — dark/light mode implementado con ThemeContext y CSS tokens globales
+- **Iconos de acción** — los botones de editar/eliminar usan iconos de lucide-react (Pencil, Trash2) en lugar de texto
 
 ---
 
@@ -561,23 +160,28 @@ feat(frontend): add projects service and context
 - ✅ Configuración inicial completa
 - ✅ Base de datos con RLS, triggers y NOT NULL en status/priority
 - ✅ Tipos TypeScript generados y organizados por entidad
-- ✅ AuthContext separado en auth.types, auth.reducer, AuthContext, useAuth
-- ✅ TaskContext separado en tasks.types, tasks.reducer, TaskContext, useTask
-- ✅ ProjectContext separado en projects.types, projects.reducer, ProjectContext, useProject
-- ✅ Router con rutas públicas y privadas
+- ✅ AuthContext con perfil de usuario integrado en el estado
+- ✅ TaskContext, ProjectContext, TagContext — cada uno con types, reducer, context y hook
+- ✅ ThemeContext con dark/light mode
+- ✅ Router con PrivateRoute y PrivateLayout (Header + Outlet)
 - ✅ LoginPage y RegisterPage con estilos split screen
-- ✅ TasksService y ProjectsService con CRUD completo
+- ✅ Header con navegación (NavLink a /tasks y /projects), email del usuario, ThemeToggle y cerrar sesión
 - ✅ TasksPage con crear, listar, editar y eliminar tareas
-- ✅ Formulario inteligente — muestra status solo al editar
-- ✅ Traducciones de status y priority al español
+- ✅ TaskCard con iconos de acción y badge de status
+- ✅ TaskCard muestra el nombre del proyecto asociado
+- ✅ Formulario de tareas con selector de proyecto opcional
+- ✅ ProjectsPage con crear, listar, editar y eliminar proyectos
+- ✅ ProjectCard con iconos de acción
+- ✅ Paleta de colores semántica global (tokens CSS para light/dark)
+- ✅ reset(initialValues) al hacer submit para limpiar el formulario correctamente
 
 ## Próximos pasos
 
-1. Tags — service, types y context (igual que projects)
-2. Header con email del usuario y botón cerrar sesión
-3. Componente TaskCard separado
-4. Filtros por status y priority
-5. UI pulida con Tailwind
+1. Filtros en TasksPage — por status y por proyecto
+2. Tags — selector en formulario de tareas, mostrar en TaskCard
+3. Perfil de usuario — editar username y avatar
+4. Footer
+5. Pulido UI
 
 ---
 
@@ -589,10 +193,13 @@ feat(frontend): add projects service and context
 - **`.env.local`**: debe tener el punto inicial, si no Vite no lo lee
 - **supabase gen types**: ejecutar desde la raíz del proyecto, no desde backend/supabase/
 - **Commits**: `tipo(scope): descripción` — ej: `feat(frontend): add login page`
+- **reset(initialValues)**: usar siempre con los valores iniciales explícitos, no `reset()` sin argumentos, para que el select de proyecto vuelva a "Sin proyecto"
 - Los servicios van en `services/` directamente, solo `client.ts` dentro de `services/supabase/`
-- Los contextos están organizados por funcionalidad: `context/auth/`, `context/tasks/`, `context/projects/`
-- Los tipos están organizados por entidad: `types/task.types.ts`, `types/project.types.ts`
+- Los contextos están organizados por funcionalidad en `context/`
+- Los tipos están organizados por entidad en `types/`
 - Los componentes nunca llaman a Supabase directamente, solo los servicios
 - Estado global con useReducer + Context, sin Zustand ni Redux
 - Los valores técnicos van en inglés en la BD y se traducen solo en la UI con statusLabels/priorityLabels
 - `key={editingTask?.id ?? 'new'}` en el formulario fuerza el reset correcto de react-hook-form al editar
+- `PrivateLayout` debe definirse fuera de `AppRouter` para evitar que React la desmonte en cada render
+- Las rutas hijas van como `<Route>` hijas del `<Route element={<PrivateLayout/>}>`, no dentro de componentes React
