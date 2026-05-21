@@ -1,4 +1,5 @@
 import { Pencil, Trash2 } from "lucide-react";
+import { useProject } from "../../../context/projects/useProject";
 import { useTask } from "../../../context/tasks/useTask";
 import type { Task } from "../../../types/task.types";
 import { statusLabels } from "../../../utils/task.utils";
@@ -10,6 +11,11 @@ type TaskCardProps = {
 
 export const TaskCard = ({ task, onEdit }: TaskCardProps) => {
   const { deleteTask } = useTask();
+
+  const {
+    state: { projects },
+  } = useProject();
+  const project = projects.find((project) => project.id === task.project_id);
 
   return (
     <div
@@ -34,9 +40,7 @@ export const TaskCard = ({ task, onEdit }: TaskCardProps) => {
         </button>
       </div>
       <div className="font-semibold text-main-text">{task.title}</div>
-      <div className="text-sm text-main-text/60">
-        {task.description}
-      </div>
+      <div className="text-sm text-main-text/60">{task.description}</div>
       <div
         className={`mt-3 inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${
           task.status === "done"
@@ -48,6 +52,13 @@ export const TaskCard = ({ task, onEdit }: TaskCardProps) => {
       >
         {statusLabels[task.status ?? "todo"]}
       </div>
+      {project && (
+        <div className="mt-3">
+          <span className="inline-flex rounded-full bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary">
+            📁 {project.name}
+          </span>
+        </div>
+      )}
     </div>
   );
 };
