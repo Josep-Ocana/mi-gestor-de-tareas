@@ -1,4 +1,5 @@
 import { useProject } from "../../../context/projects/useProject";
+import { statusLabels } from "../../../utils/task.utils";
 
 type TaskFiltersProps = {
   filterStatus: string;
@@ -32,9 +33,11 @@ export default function TaskFilters({
           className="w-full rounded-lg border border-border bg-main-bg text-main-text px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary"
         >
           <option value="">Todos</option>
-          <option value="todo">Por hacer</option>
-          <option value="in_progress">En progreso</option>
-          <option value="done">Completada</option>
+          {Object.entries(statusLabels).map(([key, label]) => (
+            <option key={key} value={key}>
+              {label}
+            </option>
+          ))}
         </select>
       </div>
       <div className="flex items-center gap-4">
