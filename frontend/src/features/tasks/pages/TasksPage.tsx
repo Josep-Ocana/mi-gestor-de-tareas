@@ -7,6 +7,7 @@ import { useProject } from "../../../context/projects/useProject";
 import { useTask } from "../../../context/tasks/useTask";
 import type { Task } from "../../../types/task.types";
 import { TaskCard } from "../components/TaskCard";
+import TaskFilters from "../components/TaskFilters";
 
 const taskSchema = z.object({
   title: z.string().min(1, "El título es obligatorio"),
@@ -25,6 +26,22 @@ export function TasksPage() {
   } = useProject();
 
   const [editingTask, setEditingTask] = useState<Task | null>(null);
+
+  const [filterStatus, setFilterStatus] = useState("");
+  const [filterProject, setFilterProject] = useState("");
+
+  const filteredTasks = state.tasks
+    .filter((task) => (filterStatus ? task.status === filterStatus : true))
+    .filter((task) =>
+      filterProject ? task.project_id === filterProject : true,
+    );
+
+  const onStatusChange = (status: string) => {
+    setFilterStatus(status);
+  };
+  const onProjectChange = (project: string) => {
+    setFilterProject(project);
+  };
 
   useEffect(() => {
     getTasks();
@@ -189,6 +206,7 @@ export function TasksPage() {
             </button>
           </form>
         </section>
+
         {/* SECCIÓN LISTA DE TAREAS */}
         <section
           id="task-list"
@@ -196,20 +214,28 @@ export function TasksPage() {
           aria-live="polite"
           className="mx-auto mt-6 w-full max-w-md rounded-xl bg-main-bg p-6 shadow lg:mx-0 lg:mt-0 lg:max-w-none lg:justify-self-start"
         >
-          {state.tasks.length <= 0 ? (
+          <TaskFilters
+            filterStatus={filterStatus}
+            filterProject={filterProject}
+            onStatusChange={onStatusChange}
+            onProjectChange={onProjectChange}
+          />
+          {state.tasks.length === 0 ? (
             <h2 className="py-12 text-center text-sm text-main-text/50">
               <span aria-hidden="true" className="text-2xl">
                 📝
               </span>
               <span className="block">Añade una tarea</span>
             </h2>
+          ) : filteredTasks.length === 0 ? (
+            <p>No hay tareas con los filtros seleccionados</p>
           ) : (
             <>
               <h2 className="mb-4 text-xl font-semibold text-main-text dark:text-main-text/90">
                 Lista de tareas
               </h2>
               <div role="list">
-                {state.tasks.map((task) => (
+                {filteredTasks.map((task) => (
                   <TaskCard key={task.id} task={task} onEdit={handleEdit} />
                 ))}
               </div>
