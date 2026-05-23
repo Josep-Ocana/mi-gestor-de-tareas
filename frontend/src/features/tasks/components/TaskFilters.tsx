@@ -20,7 +20,7 @@ export default function TaskFilters({
 
   return (
     <div className="flex justify-between items-center w-full mx-auto rounded-xl bg-main-bg p-6 ">
-      <h2 className="text-xl font-semibold text-main-text">Filtrar</h2>
+      <h2 className="text-xl font-semibold text-main-text">Filtro</h2>
       <div className="flex items-center gap-4">
         <label htmlFor="status" className="dark:text-main-text/80">
           Estado:
