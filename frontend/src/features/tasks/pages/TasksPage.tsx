@@ -44,6 +44,11 @@ export function TasksPage() {
     setFilterProject(project);
   };
 
+  const handleClearFilters = () => {
+    setFilterStatus("");
+    setFilterProject("");
+  };
+
   useEffect(() => {
     getTasks();
   }, [getTasks]);
@@ -220,6 +225,7 @@ export function TasksPage() {
           <TaskFilters
             filterStatus={filterStatus}
             filterProject={filterProject}
+            onClearFilters={handleClearFilters}
             onStatusChange={onStatusChange}
             onProjectChange={onProjectChange}
           />

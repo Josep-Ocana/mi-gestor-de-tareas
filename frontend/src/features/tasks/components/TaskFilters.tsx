@@ -4,6 +4,7 @@ import { statusLabels } from "../../../utils/task.utils";
 type TaskFiltersProps = {
   filterStatus: string;
   filterProject: string;
+  onClearFilters: () => void;
   onStatusChange: (value: string) => void;
   onProjectChange: (value: string) => void;
 };
@@ -11,6 +12,7 @@ type TaskFiltersProps = {
 export default function TaskFilters({
   filterStatus,
   filterProject,
+  onClearFilters,
   onStatusChange,
   onProjectChange,
 }: TaskFiltersProps) {
@@ -58,6 +60,12 @@ export default function TaskFilters({
             </option>
           ))}
         </select>
+        <button
+          onClick={onClearFilters}
+          className="w-full rounded-lg bg-primary hover:bg-primary-hover py-3 font-medium text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+        >
+          Limpiar
+        </button>
       </div>
     </div>
   );
