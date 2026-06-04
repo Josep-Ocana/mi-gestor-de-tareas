@@ -4,8 +4,10 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 import { useAuth } from "../../../context/auth/useAuth";
 import { useProject } from "../../../context/projects/useProject";
+import { useTag } from "../../../context/tags/useTag";
 import { useTask } from "../../../context/tasks/useTask";
-import type { Task } from "../../../types/task.types";
+import type { Tag } from "../../../types/tag.types";
+import type { TaskWithTags } from "../../../types/task.types";
 import { statusLabels } from "../../../utils/task.utils";
 import { TaskCard } from "../components/TaskCard";
 import TaskFilters from "../components/TaskFilters";
@@ -25,11 +27,22 @@ export function TasksPage() {
   const {
     state: { projects },
   } = useProject();
+  const {
+    state: { tags },
+    createTag,
+    addTagToTask,
+    removeTagFromTask,
+  } = useTag();
+  // EditTasks
+  const [editingTask, setEditingTask] = useState<TaskWithTags | null>(null);
 
-  const [editingTask, setEditingTask] = useState<Task | null>(null);
-
+  // Filters
   const [filterStatus, setFilterStatus] = useState("");
   const [filterProject, setFilterProject] = useState("");
+
+  // Tags
+  const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
+  const [newTagInput, setNewTagInput] = useState("");
 
   const filteredTasks = state.tasks
     .filter((task) => (filterStatus ? task.status === filterStatus : true))
@@ -74,28 +87,77 @@ export function TasksPage() {
     try {
       if (editingTask) {
         await updateTask(editingTask.id, data);
+
+        const previousTagIds = editingTask.tags.map((tag) => tag.id);
+        const selectedTagIds = selectedTags.map((tag) => tag.id);
+
+        const tagsToAdd = selectedTags.filter(
+          (tag) => !previousTagIds.includes(tag.id),
+        );
+
+        const tagsToRemove = editingTask.tags.filter(
+          (tag) => !selectedTagIds.includes(tag.id),
+        );
+
+        await Promise.all([
+          ...tagsToAdd.map((tag) => addTagToTask(editingTask.id, tag.id)),
+          ...tagsToRemove.map((tag) =>
+            removeTagFromTask(editingTask.id, tag.id),
+          ),
+        ]);
+
+        await getTasks();
       } else {
-        await createTask({
+        const newTask = await createTask({
           ...data,
           project_id: data.project_id || null,
           owner_id: authState.user!.id,
         });
+
+        await Promise.all(
+          selectedTags.map((tag) => addTagToTask(newTask.id, tag.id)),
+        );
+        await getTasks();
       }
       reset(initialValues);
+      setSelectedTags([]);
+      setNewTagInput("");
       setEditingTask(null);
     } catch {
       // error ya se muestra via state.error
     }
   };
 
-  const handleEdit = (task: Task) => {
+  const handleEdit = (task: TaskWithTags) => {
     setEditingTask(task);
+    setSelectedTags(task.tags ?? []);
     reset({
       title: task.title,
       description: task.description ?? "",
       status: task.status as "todo",
       project_id: task.project_id ?? "",
     });
+  };
+
+  const handleAddTag = async (tagId: Tag["id"]) => {
+    const tag = tags.find((t) => t.id === tagId);
+    if (tag && !selectedTags.find((t) => t.id === tagId)) {
+      setSelectedTags([...selectedTags, tag]);
+    }
+  };
+
+  const handleCreateTag = async (name: string) => {
+    const newTag = await createTag({
+      name,
+      owner_id: authState.user!.id,
+    });
+    if (newTag) {
+      setSelectedTags([...selectedTags, newTag]);
+    }
+  };
+
+  const handleRemoveTag = (tagId: string) => {
+    setSelectedTags(selectedTags.filter((tag) => tag.id !== tagId));
   };
 
   return (
@@ -118,6 +180,7 @@ export function TasksPage() {
                 {editingTask ? "Editar tarea" : "Crea una nueva tarea"}
               </h1>
             </div>
+
             <div className="mb-4 flex flex-col gap-2">
               <label htmlFor="title" className="dark:text-main-text/90">
                 Título
@@ -142,9 +205,10 @@ export function TasksPage() {
                 </span>
               )}
             </div>
+
             <div className="mb-4 flex flex-col gap-2">
               <label htmlFor="description" className="dark:text-main-text/80">
-                Descripción:
+                Descripción
               </label>
               <input
                 id="description"
@@ -167,11 +231,16 @@ export function TasksPage() {
                 </span>
               )}
             </div>
+
             <div className="mb-4 flex flex-col gap-2">
               <label htmlFor="project" className="dark:text-main-text/80">
-                Proyecto:
+                Proyecto
               </label>
-              <select id="project" {...register("project_id")}>
+              <select
+                id="project"
+                {...register("project_id")}
+                className="w-full rounded-lg border border-border bg-main-bg text-main-text px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary"
+              >
                 <option value="">Sin Proyecto</option>
                 {projects.map((project) => (
                   <option key={project.id} value={project.id}>
@@ -179,6 +248,82 @@ export function TasksPage() {
                   </option>
                 ))}
               </select>
+            </div>
+
+            <div className="flex flex-col mb-5 gap-2">
+              <label htmlFor="tag" className="dark:text-main-text/80">
+                Etiquetas
+              </label>
+              <div className="flex justify-between gap-5">
+                {/* Selector de tags existentes */}
+                <select
+                  onChange={(e) => handleAddTag(e.target.value)}
+                  value=""
+                  className="w-full rounded-lg border border-border bg-card-bg text-main-text px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary"
+                >
+                  <option value="">Selecciona una tag existente...</option>
+                  {tags
+                    .filter((tag) => !selectedTags.find((s) => s.id === tag.id))
+                    .map((tag) => (
+                      <option key={tag.id} value={tag.id}>
+                        {tag.name}
+                      </option>
+                    ))}
+                </select>
+              </div>
+
+              {/* Input para nueva tag */}
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={newTagInput}
+                  onChange={(e) => setNewTagInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      if (newTagInput.trim()) {
+                        handleCreateTag(newTagInput.trim());
+                        setNewTagInput("");
+                      }
+                    }
+                  }}
+                  placeholder="O escribe una tag nueva..."
+                  className="flex-1 rounded-lg border border-border bg-card-bg px-4 py-3 text-main-text focus:outline-none focus:ring-2 focus:ring-primary"
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (newTagInput.trim()) {
+                      handleCreateTag(newTagInput.trim());
+                      setNewTagInput("");
+                    }
+                  }}
+                  className="rounded-lg bg-primary hover:bg-primary-hover px-4 py-3 text-sm font-medium text-white cursor-pointer"
+                >
+                  Crear
+                </button>
+              </div>
+
+              {/* Pills de tags seleccionadas */}
+              {selectedTags.length > 0 && (
+                <div className="flex flex-wrap gap-2 mt-1">
+                  {selectedTags.map((tag) => (
+                    <span
+                      key={tag.id}
+                      className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary"
+                    >
+                      {tag.name}
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveTag(tag.id)}
+                        className="cursor-pointer hover:text-danger"
+                      >
+                        x
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
 
             {editingTask && (
@@ -245,7 +390,11 @@ export function TasksPage() {
               </h2>
               <div role="list">
                 {filteredTasks.map((task) => (
-                  <TaskCard key={task.id} task={task} onEdit={handleEdit} />
+                  <TaskCard
+                    key={task.id}
+                    task={task}
+                    onEdit={handleEdit}
+                  />
                 ))}
               </div>
             </>

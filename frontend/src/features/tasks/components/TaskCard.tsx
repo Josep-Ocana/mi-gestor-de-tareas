@@ -1,12 +1,12 @@
 import { Pencil, Trash2 } from "lucide-react";
 import { useProject } from "../../../context/projects/useProject";
 import { useTask } from "../../../context/tasks/useTask";
-import type { Task } from "../../../types/task.types";
+import type { TaskWithTags } from "../../../types/task.types";
 import { statusLabels } from "../../../utils/task.utils";
 
 type TaskCardProps = {
-  task: Task;
-  onEdit: (task: Task) => void;
+  task: TaskWithTags;
+  onEdit: (task: TaskWithTags) => void;
 };
 
 export const TaskCard = ({ task, onEdit }: TaskCardProps) => {

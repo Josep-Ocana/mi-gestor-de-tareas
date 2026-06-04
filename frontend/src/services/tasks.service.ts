@@ -1,10 +1,22 @@
-import type { InsertTask, Task, UpdateTask } from "../types/task.types";
+import type { Tag } from "../types/tag.types";
+import type {
+  InsertTask,
+  Task,
+  TaskWithTags,
+  UpdateTask,
+} from "../types/task.types";
 import { supabase } from "./supabase/client";
 
-export const getTasks = async (): Promise<Task[]> => {
-  const { data, error } = await supabase.from("tasks").select("*");
+export const getTasks = async (): Promise<TaskWithTags[]> => {
+  const { data, error } = await supabase
+    .from("tasks")
+    .select("*, task_tags(tags(*))");
   if (error) throw error;
-  return data ?? [];
+
+  return (data ?? []).map((task) => ({
+    ...task,
+    tags: task.task_tags.map((tt: { tags: Tag }) => tt.tags),
+  }));
 };
 
 export const getTaskById = async (id: Task["id"]): Promise<Task | null> => {

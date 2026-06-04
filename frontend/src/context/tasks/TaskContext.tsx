@@ -5,7 +5,12 @@ import {
   getTasks as fetchTasks,
   updateTask as updateTaskService,
 } from "../../services/tasks.service";
-import type { InsertTask, Task, UpdateTask } from "../../types/task.types";
+import type {
+  InsertTask,
+  Task,
+  TaskWithTags,
+  UpdateTask,
+} from "../../types/task.types";
 import { taskReducer } from "./tasks.reducer";
 import type { TaskContextType, TaskState } from "./tasks.types";
 
@@ -46,11 +51,17 @@ export function TaskProvider({ children }: { children: React.ReactNode }) {
       dispatch({ type: "SET_ERROR", payload: "Error al cargar las tareas" });
     }
   };
-  const createTask = async (task: InsertTask) => {
+  const createTask = async (task: InsertTask): Promise<TaskWithTags> => {
     try {
       dispatch({ type: "SET_LOADING" });
       const newTask = await createTaskService(task);
-      dispatch({ type: "CREATE_TASK", payload: newTask });
+
+      const newTaskWithTags: TaskWithTags = {
+        ...newTask,
+        tags: [],
+      };
+      dispatch({ type: "CREATE_TASK", payload: newTaskWithTags });
+      return newTaskWithTags;
     } catch (error) {
       dispatch({ type: "SET_ERROR", payload: "Error al crear la nueva tarea" });
       throw error;
@@ -61,7 +72,14 @@ export function TaskProvider({ children }: { children: React.ReactNode }) {
     try {
       dispatch({ type: "SET_LOADING" });
       const updatedTask = await updateTaskService(id, task);
-      dispatch({ type: "UPDATE_TASK", payload: updatedTask });
+
+      const previousTask = state.tasks.find((task) => task.id === id);
+      const updatedTaskWithTags: TaskWithTags = {
+        ...updatedTask,
+        tags: previousTask?.tags ?? [],
+      };
+
+      dispatch({ type: "UPDATE_TASK", payload: updatedTaskWithTags });
     } catch (error) {
       dispatch({ type: "SET_ERROR", payload: "Error al actualizar la tarea" });
       throw error;
