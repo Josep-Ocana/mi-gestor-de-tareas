@@ -8,7 +8,7 @@ import { useTag } from "../../../context/tags/useTag";
 import { useTask } from "../../../context/tasks/useTask";
 import type { Tag } from "../../../types/tag.types";
 import type { TaskWithTags } from "../../../types/task.types";
-import { statusLabels } from "../../../utils/task.utils";
+import { getTagColor, statusLabels } from "../../../utils/task.utils";
 import { TaskCard } from "../components/TaskCard";
 import TaskFilters from "../components/TaskFilters";
 
@@ -310,7 +310,7 @@ export function TasksPage() {
                   {selectedTags.map((tag) => (
                     <span
                       key={tag.id}
-                      className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary"
+                      className={`inline-flex items-center gap-1 rounded-full bg-primary/10 px-2.5 py-1 text-xs font-medium ${getTagColor(tag.id).bg} ${getTagColor(tag.id).text}`}
                     >
                       {tag.name}
                       <button

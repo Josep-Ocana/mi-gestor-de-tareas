@@ -2,7 +2,7 @@ import { Pencil, Trash2 } from "lucide-react";
 import { useProject } from "../../../context/projects/useProject";
 import { useTask } from "../../../context/tasks/useTask";
 import type { TaskWithTags } from "../../../types/task.types";
-import { statusLabels } from "../../../utils/task.utils";
+import { getTagColor, statusLabels } from "../../../utils/task.utils";
 
 type TaskCardProps = {
   task: TaskWithTags;
@@ -57,6 +57,21 @@ export const TaskCard = ({ task, onEdit }: TaskCardProps) => {
           <span className="inline-flex rounded-full bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary">
             📁 {project.name}
           </span>
+        </div>
+      )}
+      {task.tags && task.tags.length > 0 && (
+        <div className="mt-2 flex flex-wrap gap-1">
+          {task.tags.map((tag, index) => {
+            const color = getTagColor(tag.id);
+            return (
+              <span
+                key={tag.id}
+                className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${color.bg} ${color.text}`}
+              >
+                {tag.name}
+              </span>
+            );
+          })}
         </div>
       )}
     </div>
