@@ -49,8 +49,12 @@ export function TagProvider({ children }: { children: React.ReactNode }) {
       const newTag = await createTagService(tag);
       dispatch({ type: "CREATE_TAG", payload: newTag });
       return newTag;
-    } catch {
-      dispatch({ type: "SET_ERROR", payload: "Error al crear la etiqueta" });
+    } catch (error: any) {
+      const message =
+        error?.code === "23505"
+          ? "Ya tienes una etiqueta con ese nombre"
+          : "Error al crear la etiqueta";
+      dispatch({ type: "SET_ERROR", payload: message });
     }
   };
 

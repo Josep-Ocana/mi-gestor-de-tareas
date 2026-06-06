@@ -28,7 +28,7 @@ export function TasksPage() {
     state: { projects },
   } = useProject();
   const {
-    state: { tags },
+    state: { tags, error: tagError },
     createTag,
     addTagToTask,
     removeTagFromTask,
@@ -326,6 +326,12 @@ export function TasksPage() {
               )}
             </div>
 
+            {tagError && (
+              <p role="alert" className="text-sm text-danger mb-3">
+                {tagError}
+              </p>
+            )}
+
             {editingTask && (
               <div className="mb-6 flex flex-col gap-2">
                 <label htmlFor="status" className="dark:text-main-text/80">
@@ -390,11 +396,7 @@ export function TasksPage() {
               </h2>
               <div role="list">
                 {filteredTasks.map((task) => (
-                  <TaskCard
-                    key={task.id}
-                    task={task}
-                    onEdit={handleEdit}
-                  />
+                  <TaskCard key={task.id} task={task} onEdit={handleEdit} />
                 ))}
               </div>
             </>
