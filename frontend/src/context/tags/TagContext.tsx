@@ -1,4 +1,4 @@
-import { createContext, useEffect, useReducer } from "react";
+import { createContext, useCallback, useEffect, useReducer } from "react";
 import {
   addTagToTask as addTagToTaskService,
   createTag as createTagService,
@@ -26,25 +26,7 @@ const initialState: TagState = {
 export function TagProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(tagReducer, initialState);
 
-  // useEffect para obtener los proyectos
-  useEffect(() => {
-    const loadTags = async () => {
-      try {
-        dispatch({ type: "SET_LOADING" });
-        const tags = await getTagsService();
-        dispatch({ type: "SET_TAGS", payload: tags });
-      } catch {
-        dispatch({
-          type: "SET_ERROR",
-          payload: "Error al cargar las etiquetas",
-        });
-      }
-    };
-    loadTags();
-  }, []);
-
-  // Functions
-  const getTags = async () => {
+  const getTags = useCallback(async () => {
     try {
       dispatch({ type: "SET_LOADING" });
       const tags = await getTagsService();
@@ -52,7 +34,14 @@ export function TagProvider({ children }: { children: React.ReactNode }) {
     } catch {
       dispatch({ type: "SET_ERROR", payload: "Error al cargar las etiquetas" });
     }
-  };
+  }, []);
+
+  // useEffect para obtener los proyectos
+  useEffect(() => {
+    getTags();
+  }, [getTags]);
+
+  // Functions
 
   const createTag = async (tag: InsertTag): Promise<Tag | void> => {
     try {

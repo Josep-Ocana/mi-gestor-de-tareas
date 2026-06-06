@@ -1,4 +1,4 @@
-import { createContext, useEffect, useReducer } from "react";
+import { createContext, useCallback, useEffect, useReducer } from "react";
 import {
   createProject as createProjectService,
   deleteProject as deleteProjectService,
@@ -26,25 +26,7 @@ const initialState: ProjectState = {
 export function ProjectProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(projectReducer, initialState);
 
-  // useEffect para obtener los proyectos
-  useEffect(() => {
-    const loadProjects = async () => {
-      try {
-        dispatch({ type: "SET_LOADING" });
-        const projects = await fetchProjects();
-        dispatch({ type: "SET_PROJECTS", payload: projects });
-      } catch {
-        dispatch({
-          type: "SET_ERROR",
-          payload: "Error al cargar los proyectos",
-        });
-      }
-    };
-    loadProjects();
-  }, []);
-
-  // Functions
-  const getProjects = async () => {
+  const getProjects = useCallback(async () => {
     try {
       dispatch({ type: "SET_LOADING" });
       const projects = await fetchProjects();
@@ -52,7 +34,14 @@ export function ProjectProvider({ children }: { children: React.ReactNode }) {
     } catch {
       dispatch({ type: "SET_ERROR", payload: "Error al cargar los proyectos" });
     }
-  };
+  }, []);
+
+  // useEffect para obtener los proyectos
+  useEffect(() => {
+    getProjects();
+  }, [getProjects]);
+
+  // Functions
 
   const createProject = async (project: InsertProject) => {
     try {

@@ -1,4 +1,4 @@
-import { createContext, useEffect, useReducer } from "react";
+import { createContext, useCallback, useEffect, useReducer } from "react";
 import {
   createTask as createTaskService,
   deleteTask as deleteTaskService,
@@ -27,22 +27,7 @@ const initialState: TaskState = {
 export function TaskProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(taskReducer, initialState);
 
-  // useEffect para obtener las tareas
-  useEffect(() => {
-    const loadTasks = async () => {
-      try {
-        dispatch({ type: "SET_LOADING" });
-        const tasks = await fetchTasks();
-        dispatch({ type: "SET_TASKS", payload: tasks });
-      } catch {
-        dispatch({ type: "SET_ERROR", payload: "Error al cargar las tareas" });
-      }
-    };
-    loadTasks();
-  }, []);
-
-  // Functions
-  const getTasks = async () => {
+  const getTasks = useCallback(async () => {
     try {
       dispatch({ type: "SET_LOADING" });
       const tasks = await fetchTasks();
@@ -50,7 +35,15 @@ export function TaskProvider({ children }: { children: React.ReactNode }) {
     } catch {
       dispatch({ type: "SET_ERROR", payload: "Error al cargar las tareas" });
     }
-  };
+  }, []);
+
+  // useEffect para obtener las tareas
+  useEffect(() => {
+    getTasks();
+  }, [getTasks]);
+
+  // Functions
+
   const createTask = async (task: InsertTask): Promise<TaskWithTags> => {
     try {
       dispatch({ type: "SET_LOADING" });
