@@ -41,7 +41,7 @@ mi-gestor-de-tareas/
 │   │   │   │   ├── tags.types.ts ✅
 │   │   │   │   ├── tags.reducer.ts ✅
 │   │   │   │   ├── TagContext.tsx ✅
-desperate│   │   │   └── useTag.ts ✅
+│   │   │   │   └── useTag.ts ✅
 │   │   │   ├── tasks/
 │   │   │   │   ├── tasks.types.ts ✅
 │   │   │   │   ├── tasks.reducer.ts ✅
@@ -64,7 +64,8 @@ desperate│   │   │   └── useTag.ts ✅
 │   │   │   │       └── ProjectsPage.tsx ✅
 │   │   │   └── tasks/
 │   │   │       ├── components/
-│   │   │       │   └── TaskCard.tsx ✅
+│   │   │       │   ├── TaskCard.tsx ✅
+│   │   │       │   └── TaskFilters.tsx ✅
 │   │   │       └── pages/
 │   │   │           └── TasksPage.tsx ✅
 │   │   ├── router/
@@ -77,7 +78,7 @@ desperate│   │   │   └── useTag.ts ✅
 │   │   │   ├── tags.service.ts ✅
 │   │   │   └── tasks.service.ts ✅
 │   │   ├── types/
-│   │   │   ├── supabase.types.ts ✅  ← generado automáticamente
+│   │   │   ├── supabase.types.ts ✅
 │   │   │   ├── profile.types.ts ✅
 │   │   │   ├── project.types.ts ✅
 │   │   │   ├── tag.types.ts ✅
@@ -93,7 +94,8 @@ desperate│   │   │   └── useTag.ts ✅
 │   └── supabase/
 │       ├── migrations/
 │       │   ├── 20260422100322_init_schema.sql
-│       │   └── XXXXXXXXXX_add_not_null_to_tasks.sql
+│       │   ├── XXXXXXXXXX_add_not_null_to_tasks.sql
+│       │   └── 20260606055806_add_unique_tag_name_per_user.sql
 │       ├── functions/
 │       │   ├── on-user-created/
 │       │   └── notify-due-tasks/
@@ -111,7 +113,7 @@ desperate│   │   │   └── useTag.ts ✅
 
 - `profiles` — extiende auth.users con username y avatar_url
 - `projects` — proyectos del usuario
-- `tags` — etiquetas del usuario
+- `tags` — etiquetas del usuario (incluye columna `color` con default `#94a3b8`)
 - `tasks` — tareas con autorreferencia para subtareas, `project_id` nullable
 - `task_tags` — relación many to many entre tasks y tags
 
@@ -122,6 +124,7 @@ desperate│   │   │   └── useTag.ts ✅
 - Trigger `handle_updated_at` — actualiza updated_at automáticamente en tasks
 - `status` y `priority` tienen `NOT NULL` desde la segunda migración
 - `project_id` en tasks es nullable — los proyectos son opcionales
+- Constraint `unique_tag_name_per_user` — evita tags duplicadas por usuario (migración 20260606055806)
 - Tipos generados con `supabase gen types typescript --project-id REF --schema public`
 - Comando ejecutar desde la raíz del proyecto, no desde backend/supabase/
 
@@ -152,6 +155,7 @@ AppRouter
 - **Sin status en proyectos** — los proyectos no tienen estado propio, el estado lo comunican sus tareas
 - **ThemeToggle** — dark/light mode implementado con ThemeContext y CSS tokens globales
 - **Iconos de acción** — los botones de editar/eliminar usan iconos de lucide-react (Pencil, Trash2) en lugar de texto
+- **Colores de tags** — sistema automático basado en el ID de la tag (`getTagColor`) para consistencia visual sin depender de la BD. La columna `color` en BD queda reservada para cuando el usuario pueda elegir color manualmente
 
 ---
 
@@ -159,9 +163,11 @@ AppRouter
 
 - ✅ Configuración inicial completa
 - ✅ Base de datos con RLS, triggers y NOT NULL en status/priority
+- ✅ Constraint unique_tag_name_per_user en BD (migración 20260606055806)
 - ✅ Tipos TypeScript generados y organizados por entidad
 - ✅ AuthContext con perfil de usuario integrado en el estado
 - ✅ TaskContext, ProjectContext, TagContext — cada uno con types, reducer, context y hook
+- ✅ useCallback en getTasks, getProjects, getTags — evita bucle infinito de renders
 - ✅ ThemeContext con dark/light mode
 - ✅ Router con PrivateRoute y PrivateLayout (Header + Outlet)
 - ✅ LoginPage y RegisterPage con estilos split screen
@@ -169,16 +175,22 @@ AppRouter
 - ✅ TasksPage con crear, listar, editar y eliminar tareas
 - ✅ TaskCard con iconos de acción y badge de status
 - ✅ TaskCard muestra el nombre del proyecto asociado
+- ✅ TaskCard muestra las tags con colores consistentes por tag
 - ✅ Formulario de tareas con selector de proyecto opcional
+- ✅ Formulario de tareas con selector de tags existentes y creación de tags nuevas
+- ✅ Pills de tags en formulario con colores consistentes (mismo sistema que TaskCard)
+- ✅ Error de tag duplicada con mensaje al usuario ("Ya tienes una etiqueta con ese nombre")
 - ✅ ProjectsPage con crear, listar, editar y eliminar proyectos
 - ✅ ProjectCard con iconos de acción
+- ✅ Filtros en TasksPage — por status y por proyecto
 - ✅ Paleta de colores semántica global (tokens CSS para light/dark)
 - ✅ reset(initialValues) al hacer submit para limpiar el formulario correctamente
+- ✅ Sistema de colores automático para tags (TAG_COLORS + getTagColor en task.utils.ts)
 
 ## Próximos pasos
 
-1. Filtros en TasksPage — por status y por proyecto
-2. Tags — selector en formulario de tareas, mostrar en TaskCard
+1. CRUD de tags — editar y eliminar desde una página o modal
+2. Selector de color al crear tags (columna `color` ya existe en BD, no requiere migración)
 3. Perfil de usuario — editar username y avatar
 4. Footer
 5. Pulido UI
@@ -192,6 +204,7 @@ AppRouter
 - **VITE_SUPABASE_URL**: solo el dominio, sin `/rest/v1/` al final
 - **`.env.local`**: debe tener el punto inicial, si no Vite no lo lee
 - **supabase gen types**: ejecutar desde la raíz del proyecto, no desde backend/supabase/
+- **supabase migration new / db push**: ejecutar desde `backend/`, no desde la raíz
 - **Commits**: `tipo(scope): descripción` — ej: `feat(frontend): add login page`
 - **reset(initialValues)**: usar siempre con los valores iniciales explícitos, no `reset()` sin argumentos, para que el select de proyecto vuelva a "Sin proyecto"
 - Los servicios van en `services/` directamente, solo `client.ts` dentro de `services/supabase/`
@@ -203,3 +216,6 @@ AppRouter
 - `key={editingTask?.id ?? 'new'}` en el formulario fuerza el reset correcto de react-hook-form al editar
 - `PrivateLayout` debe definirse fuera de `AppRouter` para evitar que React la desmonte en cada render
 - Las rutas hijas van como `<Route>` hijas del `<Route element={<PrivateLayout/>}>`, no dentro de componentes React
+- `getTagColor(tagId)` — usa el primer carácter del UUID para asignar color consistente a cada tag
+- El constraint `unique_tag_name_per_user` evita tags duplicadas por usuario en la BD
+- PostgREST syntax para joins en Supabase: `"*, tabla_intermedia(tabla_final(*))"`— el resultado viene anidado y hay que aplanarlo con `.map()`
