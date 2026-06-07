@@ -9,6 +9,7 @@ import Header from "../components/layout/Header";
 import { LoginPage } from "../features/auth/pages/LoginPage";
 import { RegisterPage } from "../features/auth/pages/RegisterPage";
 import { ProjectsPage } from "../features/projects/pages/ProjectsPage";
+import { TagsPage } from "../features/tags/pages/TagsPage";
 import { TasksPage } from "../features/tasks/pages/TasksPage";
 import { PrivateRoute } from "./PrivateRoute";
 
@@ -38,6 +39,7 @@ export function AppRouter() {
         >
           <Route path="/tasks" element={<TasksPage />} />
           <Route path="/projects" element={<ProjectsPage />} />
+          <Route path="/tags" element={<TagsPage />} />
         </Route>
 
         {/* Ruta por defecto */}
