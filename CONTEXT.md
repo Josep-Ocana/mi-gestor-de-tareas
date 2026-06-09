@@ -62,6 +62,11 @@ mi-gestor-de-tareas/
 │   │   │   │   │   └── ProjectCard.tsx ✅
 │   │   │   │   └── pages/
 │   │   │   │       └── ProjectsPage.tsx ✅
+│   │   │   ├── tags/
+│   │   │   │   ├── components/
+│   │   │   │   │   └── TagCard.tsx ✅
+│   │   │   │   └── pages/
+│   │   │   │       └── TagsPage.tsx ✅
 │   │   │   └── tasks/
 │   │   │       ├── components/
 │   │   │       │   ├── TaskCard.tsx ✅
@@ -139,7 +144,8 @@ AppRouter
 └── PrivateRoute
     └── PrivateLayout (Header + Outlet)
         ├── /tasks   → TasksPage
-        └── /projects → ProjectsPage
+        ├── /projects → ProjectsPage
+        └── /tags    → TagsPage
 ```
 
 - `PrivateRoute` — guarda de autenticación, redirige a /login si no hay usuario
@@ -151,11 +157,11 @@ AppRouter
 ## Decisiones de diseño
 
 - **Proyectos opcionales** — `project_id` en tasks es nullable. El usuario puede crear tareas sin proyecto y asignarlas después
-- **Tags inline** — las etiquetas se gestionarán desde el formulario de tareas, no desde una página separada
+- **Tags con página dedicada** — además del selector inline en el formulario de tareas, ahora hay una página `/tags` para gestionar etiquetas con CRUD completo y selector de color propio
 - **Sin status en proyectos** — los proyectos no tienen estado propio, el estado lo comunican sus tareas
 - **ThemeToggle** — dark/light mode implementado con ThemeContext y CSS tokens globales
 - **Iconos de acción** — los botones de editar/eliminar usan iconos de lucide-react (Pencil, Trash2) en lugar de texto
-- **Colores de tags** — sistema automático basado en el ID de la tag (`getTagColor`) para consistencia visual sin depender de la BD. La columna `color` en BD queda reservada para cuando el usuario pueda elegir color manualmente
+- **Colores de tags** — la columna `color` en BD se usa activamente con un `<input type="color">` en la página de tags. `getTagColor()` sigue como fallback para tags sin color definido
 
 ---
 
@@ -171,7 +177,7 @@ AppRouter
 - ✅ ThemeContext con dark/light mode
 - ✅ Router con PrivateRoute y PrivateLayout (Header + Outlet)
 - ✅ LoginPage y RegisterPage con estilos split screen
-- ✅ Header con navegación (NavLink a /tasks y /projects), email del usuario, ThemeToggle y cerrar sesión
+- ✅ Header con navegación (NavLink a /tasks, /projects y /tags), email del usuario, ThemeToggle y cerrar sesión
 - ✅ TasksPage con crear, listar, editar y eliminar tareas
 - ✅ TaskCard con iconos de acción y badge de status
 - ✅ TaskCard muestra el nombre del proyecto asociado
@@ -186,14 +192,16 @@ AppRouter
 - ✅ Paleta de colores semántica global (tokens CSS para light/dark)
 - ✅ reset(initialValues) al hacer submit para limpiar el formulario correctamente
 - ✅ Sistema de colores automático para tags (TAG_COLORS + getTagColor en task.utils.ts)
+- ✅ TagsPage con crear, listar, editar y eliminar etiquetas
+- ✅ TagCard con selector de color (`<input type="color">`) y acciones inline (Pencil/Trash2)
+- ✅ Header con navegación a `/tags`
+- ✅ UI redesign general — bordes redondeados, sombras, backdrop-blur, transiciones
 
 ## Próximos pasos
 
-1. CRUD de tags — editar y eliminar desde una página o modal
-2. Selector de color al crear tags (columna `color` ya existe en BD, no requiere migración)
-3. Perfil de usuario — editar username y avatar
-4. Footer
-5. Pulido UI
+1. Perfil de usuario — editar username y avatar
+2. Footer
+3. Pulido UI
 
 ---
 
