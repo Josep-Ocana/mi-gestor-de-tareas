@@ -74,11 +74,17 @@ export const TaskCard = ({ task, onEdit }: TaskCardProps) => {
       {task.tags && task.tags.length > 0 && (
         <div className="mt-5 flex flex-wrap gap-1.5">
           {task.tags.map((tag) => {
-            const color = getTagColor(tag.id);
+            const hashColor = getTagColor(tag.id);
             return (
               <span
                 key={tag.id}
-                className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${color.bg} ${color.text}`}
+                className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium${
+                  tag.color ? "" : ` ${hashColor.bg} ${hashColor.text}`
+                }`}
+                style={tag.color ? {
+                  backgroundColor: `${tag.color}20`,
+                  color: tag.color,
+                } : undefined}
               >
                 {tag.name}
               </span>
