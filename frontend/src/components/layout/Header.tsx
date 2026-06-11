@@ -13,7 +13,7 @@ export default function Header() {
     <header className="sticky top-0 z-20 border-b border-border/80 bg-main-bg/80 px-4 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-xl sm:px-6">
       <div className="mx-auto grid max-w-7xl grid-cols-[1fr_auto] items-center gap-3 lg:grid-cols-[1fr_auto_1fr]">
         <div className="flex min-w-0 items-center gap-3">
-          <div className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.18)]">
+          <div className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-black shadow-[inset_0_1px_0_rgba(255,255,255,0.18)]">
             <CheckSquare aria-hidden="true" className="text-white" size={22} />
           </div>
           <h1 className="truncate text-base font-semibold tracking-tight text-main-text sm:text-lg">
@@ -30,7 +30,7 @@ export default function Header() {
             className={({ isActive }) =>
               `flex-1 rounded-xl px-3 py-2 text-center text-sm font-medium transition-all duration-300 active:scale-[0.98] ${
                 isActive
-                  ? "bg-primary text-white shadow-[0_10px_24px_-18px_rgba(24,63,148,0.9)]"
+                  ? "bg-page-task text-white shadow-[0_10px_24px_-18px_rgba(24,63,148,0.9)]"
                   : "text-main-text/60 hover:bg-border/60 hover:text-main-text"
               }`
             }
@@ -42,7 +42,7 @@ export default function Header() {
             className={({ isActive }) =>
               `flex-1 rounded-xl px-3 py-2 text-center text-sm font-medium transition-all duration-300 active:scale-[0.98] ${
                 isActive
-                  ? "bg-primary text-white shadow-[0_10px_24px_-18px_rgba(24,63,148,0.9)]"
+                  ? "bg-page-project text-white shadow-[0_10px_24px_-18px_rgba(24,63,148,0.9)]"
                   : "text-main-text/60 hover:bg-border/60 hover:text-main-text"
               }`
             }
@@ -54,7 +54,7 @@ export default function Header() {
             className={({ isActive }) =>
               `flex-1 rounded-xl px-3 py-2 text-center text-sm font-medium transition-all duration-300 active:scale-[0.98] ${
                 isActive
-                  ? "bg-primary text-white shadow-[0_10px_24px_-18px_rgba(24,63,148,0.9)]"
+                  ? "bg-page-tag text-white shadow-[0_10px_24px_-18px_rgba(24,63,148,0.9)]"
                   : "text-main-text/60 hover:bg-border/60 hover:text-main-text"
               }`
             }
@@ -66,7 +66,7 @@ export default function Header() {
             className={({ isActive }) =>
               `flex-1 rounded-xl px-3 py-2 text-center text-sm font-medium transition-all duration-300 active:scale-[0.98] ${
                 isActive
-                  ? "bg-primary text-white shadow-[0_10px_24px_-18px_rgba(24,63,148,0.9)]"
+                  ? "bg-page-profile text-white shadow-[0_10px_24px_-18px_rgba(24,63,148,0.9)]"
                   : "text-main-text/60 hover:bg-border/60 hover:text-main-text"
               }`
             }

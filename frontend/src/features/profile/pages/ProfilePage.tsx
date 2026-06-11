@@ -80,14 +80,14 @@ export function ProfilePage() {
           >
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-page-profile">
                   Perfil
                 </p>
                 <h1 className="mt-2 text-2xl font-semibold tracking-tight text-main-text">
-                  {state.profile?.username}
+                  Mi perfil
                 </h1>
               </div>
-              <div className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+              <div className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-page-profile/10 text-page-profile">
                 <User aria-hidden="true" size={20} />
               </div>
             </div>
@@ -108,7 +108,7 @@ export function ProfilePage() {
               </div>
               <label
                 htmlFor="avatar"
-                className="cursor-pointer rounded-2xl border border-border bg-card-bg px-4 py-2.5 text-sm text-main-text/70 transition-all duration-300 hover:bg-primary/10 hover:text-primary"
+                className="cursor-pointer rounded-2xl border border-border bg-card-bg px-4 py-2.5 text-sm text-main-text/70 transition-all duration-300 hover:bg-page-profile/10 hover:text-page-profile"
               >
                 Cambiar foto
               </label>
@@ -184,7 +184,7 @@ export function ProfilePage() {
               type="submit"
               disabled={state.loading}
               aria-busy={state.loading}
-              className="mt-1 w-full rounded-2xl bg-primary py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:bg-primary-hover active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
+              className="mt-1 w-full rounded-2xl bg-page-profile py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:bg-page-profile-hover active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
             >
               {state.loading ? "Guardando..." : "Guardar cambios"}
             </button>

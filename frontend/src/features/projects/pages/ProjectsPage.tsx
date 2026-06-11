@@ -81,14 +81,14 @@ export function ProjectsPage() {
           >
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-page-project">
                   {editingProject ? "Edicion" : "Nuevo proyecto"}
                 </p>
                 <h1 className="mt-2 text-2xl font-semibold tracking-tight text-main-text">
                   {editingProject ? "Editar proyecto" : "Crear proyecto"}
                 </h1>
               </div>
-              <div className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+              <div className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-page-project/10 text-page-project">
                 <Plus aria-hidden="true" size={20} />
               </div>
             </div>
@@ -154,7 +154,7 @@ export function ProjectsPage() {
               type="submit"
               disabled={state.loading}
               aria-busy={state.loading}
-              className="mt-1 w-full rounded-2xl bg-primary py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:bg-primary-hover active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
+              className="mt-1 w-full rounded-2xl bg-page-project py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:bg-page-project-hover active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
             >
               {state.loading
                 ? "Guardando..."
@@ -173,7 +173,7 @@ export function ProjectsPage() {
         >
           <div className="mb-6 flex flex-col gap-3 border-b border-border/70 pb-5 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-page-project">
                 Mapa de trabajo
               </p>
               <h2 className="mt-2 text-3xl font-semibold tracking-tight text-main-text">
@@ -187,7 +187,7 @@ export function ProjectsPage() {
 
           {state.projects.length <= 0 ? (
             <div className="flex min-h-96 flex-col items-center justify-center rounded-[1.75rem] border border-dashed border-border bg-main-bg/50 p-8 text-center">
-              <div className="flex size-16 items-center justify-center rounded-3xl bg-primary/10 text-primary">
+              <div className="flex size-16 items-center justify-center rounded-3xl bg-page-project/10 text-page-project">
                 <FolderKanban aria-hidden="true" size={32} />
               </div>
               <h3 className="mt-5 text-xl font-semibold tracking-tight text-main-text">
@@ -199,7 +199,7 @@ export function ProjectsPage() {
               </p>
               <a
                 href="#form"
-                className="mt-6 inline-flex items-center gap-2 rounded-2xl bg-primary px-4 py-3 text-sm font-semibold text-white transition-all duration-300 hover:bg-primary-hover active:scale-[0.98]"
+                className="mt-6 inline-flex items-center gap-2 rounded-2xl bg-page-project px-4 py-3 text-sm font-semibold text-white transition-all duration-300 hover:bg-page-project-hover active:scale-[0.98]"
               >
                 <Plus aria-hidden="true" size={16} />
                 Crear proyecto

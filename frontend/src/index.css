@@ -23,6 +23,15 @@
   --color-success-hover: #226319;
   --color-progress: #f5f39f;
   --color-progress-hover: #915011;
+  --color-page-task: #2563eb;
+  --color-page-task-hover: #1d4ed8;
+  --color-page-project: #d68954;
+  --color-page-project-hover: #c2410c;
+  --color-page-tag: #851b87;
+  --color-page-tag-hover: #561157;
+  --color-page-profile: #10359c;
+  --color-page-profile-hover: #1440b3;
+  --color-black: #2b2b2b;
 }
 
 /* Modo Oscuro*/
@@ -40,4 +49,12 @@
   --color-success-hover: #226319;
   --color-progress: #915011;
   --color-progress-hover: #f5f39f;
+  --color-page-task: #60a5fa;
+  --color-page-task-hover: #3b82f6;
+  --color-page-project: #fb923c;
+  --color-page-project-hover: #f97316;
+  --color-page-tag: #a78bfa;
+  --color-page-tag-hover: #8b5cf6;
+  --color-page-profile: #1440b3;
+  --color-page-profile-hover: #10359c;
 }
