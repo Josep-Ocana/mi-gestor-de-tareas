@@ -57,6 +57,9 @@ mi-gestor-de-tareas/
 │   │   │   │   └── pages/
 │   │   │   │       ├── LoginPage.tsx ✅
 │   │   │   │       └── RegisterPage.tsx ✅
+│   │   │   ├── profile/
+│   │   │   │   └── pages/
+│   │   │   │       └── ProfilePage.tsx ✅
 │   │   │   ├── projects/
 │   │   │   │   ├── components/
 │   │   │   │   │   └── ProjectCard.tsx ✅
@@ -79,6 +82,7 @@ mi-gestor-de-tareas/
 │   │   ├── services/
 │   │   │   ├── supabase/
 │   │   │   │   └── client.ts ✅
+│   │   │   ├── profile.service.ts ✅
 │   │   │   ├── projects.service.ts ✅
 │   │   │   ├── tags.service.ts ✅
 │   │   │   └── tasks.service.ts ✅
@@ -122,6 +126,11 @@ mi-gestor-de-tareas/
 - `tasks` — tareas con autorreferencia para subtareas, `project_id` nullable
 - `task_tags` — relación many to many entre tasks y tags
 
+### Supabase Storage
+
+- Bucket `avatars` — público, para almacenar avatares de usuario
+- Políticas RLS en storage.objects: SELECT público, INSERT y UPDATE solo el propio usuario (por carpeta UUID)
+
 ### Decisiones importantes
 
 - RLS activado en todas las tablas
@@ -143,9 +152,10 @@ AppRouter
 ├── /register        → RegisterPage (pública)
 └── PrivateRoute
     └── PrivateLayout (Header + Outlet)
-        ├── /tasks   → TasksPage
+        ├── /tasks    → TasksPage
         ├── /projects → ProjectsPage
-        └── /tags    → TagsPage
+        ├── /tags     → TagsPage
+        └── /profile  → ProfilePage
 ```
 
 - `PrivateRoute` — guarda de autenticación, redirige a /login si no hay usuario
@@ -157,11 +167,14 @@ AppRouter
 ## Decisiones de diseño
 
 - **Proyectos opcionales** — `project_id` en tasks es nullable. El usuario puede crear tareas sin proyecto y asignarlas después
-- **Tags con página dedicada** — además del selector inline en el formulario de tareas, ahora hay una página `/tags` para gestionar etiquetas con CRUD completo y selector de color propio
+- **Tags con página dedicada** — además del selector inline en el formulario de tareas, hay una página `/tags` para gestionar etiquetas con CRUD completo y selector de color propio
 - **Sin status en proyectos** — los proyectos no tienen estado propio, el estado lo comunican sus tareas
 - **ThemeToggle** — dark/light mode implementado con ThemeContext y CSS tokens globales
 - **Iconos de acción** — los botones de editar/eliminar usan iconos de lucide-react (Pencil, Trash2) en lugar de texto
 - **Colores de tags** — la columna `color` en BD se usa activamente con un `<input type="color">` en la página de tags. `getTagColor()` sigue como fallback para tags sin color definido
+- **Avatar** — subida a Supabase Storage en la ruta `avatars/{userId}/avatar.{ext}`. Cache-busting con timestamp para forzar recarga tras actualizar
+- **Colores únicos por página** — cada página tiene su propio tema de color definido en `index.css` para darle identidad visual propia
+- **Username en registro** — el usuario elige su username al registrarse. El trigger crea el perfil con el email como username temporal y `signUp` lo sobreescribe inmediatamente con el username real
 
 ---
 
@@ -170,14 +183,17 @@ AppRouter
 - ✅ Configuración inicial completa
 - ✅ Base de datos con RLS, triggers y NOT NULL en status/priority
 - ✅ Constraint unique_tag_name_per_user en BD (migración 20260606055806)
+- ✅ Bucket `avatars` en Supabase Storage con políticas RLS
 - ✅ Tipos TypeScript generados y organizados por entidad
 - ✅ AuthContext con perfil de usuario integrado en el estado
+- ✅ updateProfile en AuthContext — actualiza username y avatar_url via profile.service.ts
 - ✅ TaskContext, ProjectContext, TagContext — cada uno con types, reducer, context y hook
 - ✅ useCallback en getTasks, getProjects, getTags — evita bucle infinito de renders
 - ✅ ThemeContext con dark/light mode
 - ✅ Router con PrivateRoute y PrivateLayout (Header + Outlet)
 - ✅ LoginPage y RegisterPage con estilos split screen
-- ✅ Header con navegación (NavLink a /tasks, /projects y /tags), email del usuario, ThemeToggle y cerrar sesión
+- ✅ RegisterPage con campo username — el usuario elige su nombre al registrarse
+- ✅ Header con navegación (NavLink a /tasks, /projects, /tags y /profile), username del usuario, ThemeToggle y cerrar sesión
 - ✅ TasksPage con crear, listar, editar y eliminar tareas
 - ✅ TaskCard con iconos de acción y badge de status
 - ✅ TaskCard muestra el nombre del proyecto asociado
@@ -190,24 +206,27 @@ AppRouter
 - ✅ ProjectCard con iconos de acción
 - ✅ Filtros en TasksPage — por status y por proyecto
 - ✅ Paleta de colores semántica global (tokens CSS para light/dark)
+- ✅ Colores únicos por página definidos en index.css
 - ✅ reset(initialValues) al hacer submit para limpiar el formulario correctamente
 - ✅ Sistema de colores automático para tags (TAG_COLORS + getTagColor en task.utils.ts)
 - ✅ TagsPage con crear, listar, editar y eliminar etiquetas
 - ✅ TagCard con selector de color (`<input type="color">`) y acciones inline (Pencil/Trash2)
-- ✅ Header con navegación a `/tags`
+- ✅ ProfilePage con edición de username y avatar
+- ✅ Avatar con preview local, subida a Supabase Storage y cache-busting con timestamp
+- ✅ Fallback de avatar con ui-avatars.com (iniciales del username) si no hay foto
 - ✅ UI redesign general — bordes redondeados, sombras, backdrop-blur, transiciones
 
 ## Próximos pasos
 
-1. Perfil de usuario — editar username y avatar
-2. Footer
-3. Pulido UI
+1. Footer
+2. Pulido UI
 
 ---
 
 ## Notas importantes
 
 - **Zod v4**: usar `z.email()` en lugar de `z.string().email()` (deprecado en v4)
+- **Zod v4**: `z.string().default()` infiere `string | undefined` — usar `z.string().min(1)` y poner el default en `initialValues`
 - **Backend**: no tiene package.json ni npm, usa Deno. No hay que arrancar nada localmente
 - **VITE_SUPABASE_URL**: solo el dominio, sin `/rest/v1/` al final
 - **`.env.local`**: debe tener el punto inicial, si no Vite no lo lee
@@ -227,3 +246,8 @@ AppRouter
 - `getTagColor(tagId)` — usa el primer carácter del UUID para asignar color consistente a cada tag
 - El constraint `unique_tag_name_per_user` evita tags duplicadas por usuario en la BD
 - PostgREST syntax para joins en Supabase: `"*, tabla_intermedia(tabla_final(*))"`— el resultado viene anidado y hay que aplanarlo con `.map()`
+- Avatar: input `type="file"` debe usar `className="hidden"` (no `sr-only`). El `label` con `htmlFor` lo dispara correctamente
+- Cache-busting de avatar: guardar `Date.now()` en estado `cacheBuster` y añadir `?t=${cacheBuster}` a la URL — evita que el navegador muestre la imagen antigua cacheada
+- `uploadAvatar` guarda en la ruta `{userId}/avatar.{ext}` con `upsert: true` — sobreescribe el avatar anterior sin errores
+- El trigger `handle_new_user` pone el email como username temporal — `signUp` llama a `updateProfileService` inmediatamente después para sobreescribirlo con el username real
+- `UPDATE_PROFILE` en el reducer debe incluir `loading: false` y `error: null` — si no el spinner no desaparece tras guardar
