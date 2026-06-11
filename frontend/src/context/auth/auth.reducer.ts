@@ -16,6 +16,8 @@ export function authReducer(state: AuthState, action: AuthAction): AuthState {
       return {
         ...state,
         profile: action.payload,
+        loading: false,
+        error: null,
       };
 
     case "SIGN_OUT":

@@ -5,7 +5,7 @@ import { ThemeToggle } from "../ui/ThemeToggle/ThemeToggle";
 
 export default function Header() {
   const {
-    state: { user },
+    state: { user, profile },
     signOut,
   } = useAuth();
 
@@ -61,6 +61,18 @@ export default function Header() {
           >
             Etiquetas
           </NavLink>
+          <NavLink
+            to={"/profile"}
+            className={({ isActive }) =>
+              `flex-1 rounded-xl px-3 py-2 text-center text-sm font-medium transition-all duration-300 active:scale-[0.98] ${
+                isActive
+                  ? "bg-primary text-white shadow-[0_10px_24px_-18px_rgba(24,63,148,0.9)]"
+                  : "text-main-text/60 hover:bg-border/60 hover:text-main-text"
+              }`
+            }
+          >
+            Perfil
+          </NavLink>
         </nav>
 
         <div className="flex min-w-0 items-center justify-end gap-2 sm:gap-3">
@@ -74,7 +86,7 @@ export default function Header() {
               />
             </div>
             <span className="max-w-36 truncate text-xs font-medium text-main-text/70 md:max-w-52">
-              {user?.email ?? "Usuario"}
+              {profile?.username ?? user?.email ?? "Usuario"}
             </span>
           </div>
           <button

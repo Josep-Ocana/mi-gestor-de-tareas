@@ -8,6 +8,7 @@ import {
 import Header from "../components/layout/Header";
 import { LoginPage } from "../features/auth/pages/LoginPage";
 import { RegisterPage } from "../features/auth/pages/RegisterPage";
+import { ProfilePage } from "../features/profile/pages/ProfilePage";
 import { ProjectsPage } from "../features/projects/pages/ProjectsPage";
 import { TagsPage } from "../features/tags/pages/TagsPage";
 import { TasksPage } from "../features/tasks/pages/TasksPage";
@@ -40,6 +41,7 @@ export function AppRouter() {
           <Route path="/tasks" element={<TasksPage />} />
           <Route path="/projects" element={<ProjectsPage />} />
           <Route path="/tags" element={<TagsPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
         </Route>
 
         {/* Ruta por defecto */}

@@ -1,6 +1,8 @@
 import type { Session } from "@supabase/supabase-js";
 import { createContext, useEffect, useReducer } from "react";
+import { updateProfile as updateProfileService } from "../../services/profile.service";
 import { supabase } from "../../services/supabase/client";
+import type { UpdateProfile } from "../../types/profile.types";
 import { authReducer } from "./auth.reducer";
 import type { AuthContextType, AuthState } from "./auth.types";
 
@@ -113,22 +115,38 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const signUp = async (email: string, password: string) => {
+  const signUp = async (email: string, password: string, username: string) => {
     try {
       dispatch({ type: "SET_LOADING" });
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
       });
       if (error) throw error;
+      if (data.user) {
+        await updateProfileService(data.user.id, { username });
+      }
     } catch (error) {
       dispatch({ type: "SET_ERROR", payload: "Error al registrarse" });
       throw error;
     }
   };
 
+  const updateProfile = async (profile: UpdateProfile) => {
+    try {
+      dispatch({ type: "SET_LOADING" });
+      const updateProfile = await updateProfileService(state.user!.id, profile);
+      dispatch({ type: "UPDATE_PROFILE", payload: updateProfile });
+    } catch (error) {
+      dispatch({ type: "SET_ERROR", payload: "Error al actualizar el perfil" });
+      throw error;
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ state, signIn, signUp, signOut }}>
+    <AuthContext.Provider
+      value={{ state, signIn, signUp, signOut, updateProfile }}
+    >
       {children}
     </AuthContext.Provider>
   );

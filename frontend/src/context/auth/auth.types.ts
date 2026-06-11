@@ -1,5 +1,5 @@
 import type { User } from "@supabase/supabase-js";
-import type { Profile } from "../../types/profile.types";
+import type { Profile, UpdateProfile } from "../../types/profile.types";
 
 // TYPES - AuthState, AuthAction, AuthContextType
 export type AuthState = {
@@ -19,6 +19,7 @@ export type AuthAction =
 export type AuthContextType = {
   state: AuthState;
   signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string) => Promise<void>;
+  signUp: (email: string, password: string, username: string) => Promise<void>;
   signOut: () => Promise<void>;
+  updateProfile: (profile: UpdateProfile) => Promise<void>;
 };

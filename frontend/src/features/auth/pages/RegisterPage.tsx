@@ -7,6 +7,7 @@ import { useAuth } from "../../../context/auth/useAuth";
 
 const registerSchema = z
   .object({
+    username: z.string().min(1, "El nombre de usuario es obligatorio"),
     email: z.email("Introduce un email valido"),
     password: z
       .string()
@@ -27,6 +28,7 @@ export function RegisterPage() {
   const { signUp, state } = useAuth();
 
   const initialValues: RegisterFormData = {
+    username: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -44,8 +46,7 @@ export function RegisterPage() {
 
   const onSubmit = async (data: RegisterFormData) => {
     try {
-      const { email, password } = data;
-      await signUp(email, password);
+      await signUp(data.email, data.password, data.username);
       reset();
       navigate("/login");
     } catch {
@@ -130,6 +131,38 @@ export function RegisterPage() {
           )}
 
           <div className="flex flex-col gap-5">
+            {/* Nombre Usuario */}
+            <div className="flex flex-col gap-2">
+              <label
+                htmlFor="register-username"
+                className="text-sm font-medium text-main-text/75"
+              >
+                Nombre
+              </label>
+              <input
+                {...register("username")}
+                id="register-username"
+                type="text"
+                aria-required="true"
+                aria-invalid={errors.username ? "true" : undefined}
+                aria-describedby={
+                  errors.username ? "register-username-error" : undefined
+                }
+                autoComplete="username"
+                placeholder="Tu nombre..."
+                className="w-full rounded-2xl border border-border bg-main-bg/70 px-4 py-3.5 text-sm text-main-text outline-none transition-all duration-300 placeholder:text-main-text/35 focus:border-primary focus:bg-card-bg focus:ring-4 focus:ring-primary/10"
+              />
+              {errors.username && (
+                <span
+                  id="register-username-error"
+                  role="alert"
+                  className="text-sm text-danger"
+                >
+                  {errors.username.message}
+                </span>
+              )}
+            </div>
+
             <div className="flex flex-col gap-2">
               <label
                 htmlFor="register-email"
@@ -166,7 +199,7 @@ export function RegisterPage() {
                 htmlFor="register-password"
                 className="text-sm font-medium text-main-text/75"
               >
-                Contrasena
+                Password
               </label>
               <input
                 {...register("password")}
@@ -178,7 +211,7 @@ export function RegisterPage() {
                   errors.password ? "register-password-error" : undefined
                 }
                 autoComplete="new-password"
-                placeholder="Tu contrasena"
+                placeholder="Tu contraseña"
                 className="w-full rounded-2xl border border-border bg-main-bg/70 px-4 py-3.5 text-sm text-main-text outline-none transition-all duration-300 placeholder:text-main-text/35 focus:border-primary focus:bg-card-bg focus:ring-4 focus:ring-primary/10"
               />
               {errors.password && (
@@ -197,7 +230,7 @@ export function RegisterPage() {
                 htmlFor="register-confirm"
                 className="text-sm font-medium text-main-text/75"
               >
-                Confirmar contrasena
+                Confirmar Password
               </label>
               <input
                 {...register("confirmPassword")}
@@ -209,7 +242,7 @@ export function RegisterPage() {
                   errors.confirmPassword ? "register-confirm-error" : undefined
                 }
                 autoComplete="new-password"
-                placeholder="Confirma tu contrasena"
+                placeholder="Confirma tu contraseña"
                 className="w-full rounded-2xl border border-border bg-main-bg/70 px-4 py-3.5 text-sm text-main-text outline-none transition-all duration-300 placeholder:text-main-text/35 focus:border-primary focus:bg-card-bg focus:ring-4 focus:ring-primary/10"
               />
               {errors.confirmPassword && (
