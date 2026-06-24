@@ -62,7 +62,7 @@ export function RegisterPage() {
         <div className="absolute bottom-16 left-16 size-56 rounded-full bg-secondary/20 blur-3xl" />
 
         <div className="relative flex items-center gap-3">
-          <div className="flex size-11 items-center justify-center rounded-2xl border border-white/10 bg-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.18)] backdrop-blur">
+          <div className="flex size-11 items-center justify-center rounded-xl border border-white/10 bg-white/10">
             <CheckSquare aria-hidden="true" size={22} />
           </div>
           <span className="text-sm font-semibold tracking-tight">
@@ -84,7 +84,7 @@ export function RegisterPage() {
         </div>
 
         <div className="relative grid grid-cols-[0.75fr_1.25fr] gap-4">
-          <div className="rounded-4xl border border-white/10 bg-white/5 p-5 backdrop-blur">
+          <div className="rounded-xl border border-white/10 bg-white/5 p-5">
             <div className="grid grid-cols-2 gap-2">
               <div className="h-16 rounded-2xl bg-white/20" />
               <div className="h-16 rounded-2xl bg-white/10" />
@@ -92,7 +92,7 @@ export function RegisterPage() {
               <div className="h-16 rounded-2xl bg-white/20" />
             </div>
           </div>
-          <div className="rounded-4xl border border-white/10 bg-white/10 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.14)] backdrop-blur">
+          <div className="rounded-xl border border-white/10 bg-white/10 p-5">
             <div className="h-2 w-24 rounded-full bg-white/30" />
             <div className="mt-5 space-y-3">
               <div className="h-3 rounded-full bg-white/20" />
@@ -106,7 +106,7 @@ export function RegisterPage() {
       <section className="flex min-h-dvh w-full flex-col items-center justify-center bg-main-bg px-6 py-12 dark:bg-card-bg">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="w-full max-w-md rounded-4xl border border-border/80 bg-card-bg/80 p-6 shadow-[0_24px_70px_-45px_rgba(15,23,42,0.55),inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur sm:p-8"
+          className="w-full max-w-md rounded-xl border border-border/40 bg-card-bg p-6 sm:p-8"
           aria-busy={state.loading}
         >
           <div className="mb-7">
@@ -124,7 +124,7 @@ export function RegisterPage() {
           {state.error && (
             <div
               role="alert"
-              className="mb-5 rounded-2xl border border-danger/20 bg-danger/10 p-3 text-sm text-danger"
+              className="mb-5 rounded-md border border-danger/20 bg-danger/10 p-3 text-sm text-danger"
             >
               {state.error}
             </div>
@@ -150,7 +150,7 @@ export function RegisterPage() {
                 }
                 autoComplete="username"
                 placeholder="Tu nombre..."
-                className="w-full rounded-2xl border border-border bg-main-bg/70 px-4 py-3.5 text-sm text-main-text outline-none transition-all duration-300 placeholder:text-main-text/35 focus:border-primary focus:bg-card-bg focus:ring-4 focus:ring-primary/10"
+                className="w-full rounded-md border border-border/50 bg-main-bg px-3 py-2.5 text-sm text-main-text outline-none transition-colors duration-200 placeholder:text-main-text/30 focus:border-main-text/40 focus:ring-0"
               />
               {errors.username && (
                 <span
@@ -181,7 +181,7 @@ export function RegisterPage() {
                 }
                 autoComplete="email"
                 placeholder="tu@email.com"
-                className="w-full rounded-2xl border border-border bg-main-bg/70 px-4 py-3.5 text-sm text-main-text outline-none transition-all duration-300 placeholder:text-main-text/35 focus:border-primary focus:bg-card-bg focus:ring-4 focus:ring-primary/10"
+                className="w-full rounded-md border border-border/50 bg-main-bg px-3 py-2.5 text-sm text-main-text outline-none transition-colors duration-200 placeholder:text-main-text/30 focus:border-main-text/40 focus:ring-0"
               />
               {errors.email && (
                 <span
@@ -212,7 +212,7 @@ export function RegisterPage() {
                 }
                 autoComplete="new-password"
                 placeholder="Tu contraseña"
-                className="w-full rounded-2xl border border-border bg-main-bg/70 px-4 py-3.5 text-sm text-main-text outline-none transition-all duration-300 placeholder:text-main-text/35 focus:border-primary focus:bg-card-bg focus:ring-4 focus:ring-primary/10"
+                className="w-full rounded-md border border-border/50 bg-main-bg px-3 py-2.5 text-sm text-main-text outline-none transition-colors duration-200 placeholder:text-main-text/30 focus:border-main-text/40 focus:ring-0"
               />
               {errors.password && (
                 <span
@@ -243,7 +243,7 @@ export function RegisterPage() {
                 }
                 autoComplete="new-password"
                 placeholder="Confirma tu contraseña"
-                className="w-full rounded-2xl border border-border bg-main-bg/70 px-4 py-3.5 text-sm text-main-text outline-none transition-all duration-300 placeholder:text-main-text/35 focus:border-primary focus:bg-card-bg focus:ring-4 focus:ring-primary/10"
+                className="w-full rounded-md border border-border/50 bg-main-bg px-3 py-2.5 text-sm text-main-text outline-none transition-colors duration-200 placeholder:text-main-text/30 focus:border-main-text/40 focus:ring-0"
               />
               {errors.confirmPassword && (
                 <span
@@ -260,7 +260,7 @@ export function RegisterPage() {
               type="submit"
               disabled={state.loading}
               aria-busy={state.loading}
-              className="w-full rounded-2xl bg-primary py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:bg-primary-hover active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
+              className="w-full rounded-md bg-[#111111] py-3 text-sm font-medium text-white transition-colors duration-200 hover:bg-[#333333] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40"
             >
               {state.loading ? "Creando cuenta..." : "Crear cuenta"}
             </button>

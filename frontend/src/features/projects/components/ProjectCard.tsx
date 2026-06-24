@@ -35,12 +35,12 @@ export const ProjectCard = ({
   return (
     <article
       role="listitem"
-      className={`group relative min-h-44 overflow-hidden rounded-3xl border border-l-4 border-border bg-card-bg p-5 shadow-[0_20px_50px_-35px_rgba(15,23,42,0.5)] transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/25 ${
+      className={`group relative min-h-44 overflow-hidden rounded-xl border border-l-4 border-border/40 bg-card-bg p-5 ${
         isFeatured ? "md:col-span-2 md:min-h-64 md:p-7" : ""
       } ${accent.split(" ")[0]}`}
     >
       <div
-        className={`mb-8 inline-flex size-11 items-center justify-center rounded-2xl ${accent
+        className={`mb-8 inline-flex size-11 items-center justify-center rounded-xl ${accent
           .split(" ")
           .slice(1)
           .join(" ")}`}
@@ -52,14 +52,14 @@ export const ProjectCard = ({
         <button
           aria-label={`Editar proyecto: ${project.name}`}
           onClick={() => onEdit(project)}
-          className="cursor-pointer rounded-xl border border-border bg-card-bg/90 p-2 text-main-text/55 transition-all duration-300 hover:border-primary/30 hover:bg-primary/10 hover:text-primary active:scale-[0.96]"
+          className="cursor-pointer rounded-md border border-border bg-card-bg p-2 text-main-text/55 transition-colors duration-200 hover:border-primary/30 hover:bg-primary/10 hover:text-primary active:scale-[0.98]"
         >
           <Pencil size={15} />
         </button>
         <button
           aria-label={`Eliminar proyecto: ${project.name}`}
           onClick={() => deleteProject(project.id)}
-          className="cursor-pointer rounded-xl border border-border bg-card-bg/90 p-2 text-main-text/55 transition-all duration-300 hover:border-danger/30 hover:bg-danger/10 hover:text-danger active:scale-[0.96]"
+          className="cursor-pointer rounded-md border border-border bg-card-bg p-2 text-main-text/55 transition-colors duration-200 hover:border-danger/30 hover:bg-danger/10 hover:text-danger active:scale-[0.98]"
         >
           <Trash2 size={15} />
         </button>

@@ -71,7 +71,7 @@ export function ProjectsPage() {
         <section
           id="form"
           aria-label="Formulario de Proyecto"
-          className="rounded-3xl border border-border/80 bg-card-bg/80 p-5 shadow-[0_20px_50px_-30px_rgba(15,23,42,0.45),inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur lg:sticky lg:top-28 lg:self-start"
+          className="rounded-xl border border-border/40 bg-card-bg p-5 lg:sticky lg:top-28 lg:self-start"
         >
           <form
             key={editingProject?.id ?? "new"}
@@ -88,7 +88,7 @@ export function ProjectsPage() {
                   {editingProject ? "Editar proyecto" : "Crear proyecto"}
                 </h1>
               </div>
-              <div className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-page-project/10 text-page-project">
+              <div className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-page-project/10 text-page-project">
                 <Plus aria-hidden="true" size={20} />
               </div>
             </div>
@@ -107,8 +107,8 @@ export function ProjectsPage() {
                 aria-required="true"
                 aria-invalid={errors.name ? "true" : undefined}
                 aria-describedby={errors.name ? "name-error" : undefined}
-                placeholder="Anade un titulo"
-                className="w-full rounded-2xl border border-border bg-main-bg/70 px-4 py-3 text-sm text-main-text outline-none transition-all duration-300 placeholder:text-main-text/35 focus:border-primary focus:bg-card-bg focus:ring-4 focus:ring-primary/10"
+                placeholder="Añade un titulo"
+                className="w-full rounded-md border border-border/50 bg-main-bg px-3 py-2.5 text-sm text-main-text outline-none transition-colors duration-200 placeholder:text-main-text/30 focus:border-main-text/40 focus:ring-0"
               />
               {errors.name && (
                 <span
@@ -136,8 +136,8 @@ export function ProjectsPage() {
                 aria-describedby={
                   errors.description ? "description-error" : undefined
                 }
-                placeholder="Anade una descripcion"
-                className="w-full rounded-2xl border border-border bg-main-bg/70 px-4 py-3 text-sm text-main-text outline-none transition-all duration-300 placeholder:text-main-text/35 focus:border-primary focus:bg-card-bg focus:ring-4 focus:ring-primary/10"
+                placeholder="Añade una descripcion"
+                className="w-full rounded-md border border-border/50 bg-main-bg px-3 py-2.5 text-sm text-main-text outline-none transition-colors duration-200 placeholder:text-main-text/30 focus:border-main-text/40 focus:ring-0"
               />
               {errors.description && (
                 <span
@@ -154,7 +154,7 @@ export function ProjectsPage() {
               type="submit"
               disabled={state.loading}
               aria-busy={state.loading}
-              className="mt-1 w-full rounded-2xl bg-page-project py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:bg-page-project-hover active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
+              className="mt-1 w-full rounded-md bg-[#111111] py-3 text-sm font-medium text-white transition-colors duration-200 hover:bg-[#333333] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40"
             >
               {state.loading
                 ? "Guardando..."
@@ -169,7 +169,7 @@ export function ProjectsPage() {
           id="project-list"
           aria-label="Lista de Proyectos"
           aria-live="polite"
-          className="min-w-0 rounded-4xl border border-border/80 bg-card-bg/60 p-4 shadow-[0_24px_70px_-45px_rgba(15,23,42,0.55),inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur sm:p-6"
+          className="min-w-0 rounded-xl border border-border/40 bg-card-bg p-4 sm:p-6"
         >
           <div className="mb-6 flex flex-col gap-3 border-b border-border/70 pb-5 sm:flex-row sm:items-end sm:justify-between">
             <div>
@@ -186,8 +186,8 @@ export function ProjectsPage() {
           </div>
 
           {state.projects.length <= 0 ? (
-            <div className="flex min-h-96 flex-col items-center justify-center rounded-[1.75rem] border border-dashed border-border bg-main-bg/50 p-8 text-center">
-              <div className="flex size-16 items-center justify-center rounded-3xl bg-page-project/10 text-page-project">
+            <div className="flex min-h-96 flex-col items-center justify-center rounded-xl border border-border/40 bg-main-bg p-8 text-center">
+              <div className="flex size-16 items-center justify-center rounded-xl bg-page-project/10 text-page-project">
                 <FolderKanban aria-hidden="true" size={32} />
               </div>
               <h3 className="mt-5 text-xl font-semibold tracking-tight text-main-text">
@@ -199,7 +199,7 @@ export function ProjectsPage() {
               </p>
               <a
                 href="#form"
-                className="mt-6 inline-flex items-center gap-2 rounded-2xl bg-page-project px-4 py-3 text-sm font-semibold text-white transition-all duration-300 hover:bg-page-project-hover active:scale-[0.98]"
+                className="mt-6 inline-flex items-center gap-2 rounded-md bg-[#111111] px-4 py-2.5 text-sm font-medium text-white transition-colors duration-200 hover:bg-[#333333] active:scale-[0.98]"
               >
                 <Plus aria-hidden="true" size={16} />
                 Crear proyecto

@@ -71,7 +71,7 @@ export function ProfilePage() {
       <div className="mx-auto max-w-xl">
         <section
           aria-label="Formulario de perfil"
-          className="rounded-3xl border border-border/80 bg-card-bg/80 p-6 shadow-[0_20px_50px_-30px_rgba(15,23,42,0.45),inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur"
+          className="rounded-xl border border-border/40 bg-card-bg p-6"
         >
           <form
             onSubmit={handleSubmit(onSubmit)}
@@ -80,14 +80,14 @@ export function ProfilePage() {
           >
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-page-profile">
+                <p className="text-[10px] font-medium uppercase tracking-[0.08em] text-main-text/40">
                   Perfil
                 </p>
                 <h1 className="mt-2 text-2xl font-semibold tracking-tight text-main-text">
                   Mi perfil
                 </h1>
               </div>
-              <div className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-page-profile/10 text-page-profile">
+              <div className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-page-profile/10 text-page-profile">
                 <User aria-hidden="true" size={20} />
               </div>
             </div>
@@ -108,7 +108,7 @@ export function ProfilePage() {
               </div>
               <label
                 htmlFor="avatar"
-                className="cursor-pointer rounded-2xl border border-border bg-card-bg px-4 py-2.5 text-sm text-main-text/70 transition-all duration-300 hover:bg-page-profile/10 hover:text-page-profile"
+                className="cursor-pointer rounded-md border border-border/50 bg-card-bg px-4 py-2.5 text-sm text-main-text/70 transition-colors duration-200 hover:bg-page-profile/10 hover:text-page-profile"
               >
                 Cambiar foto
               </label>
@@ -147,7 +147,7 @@ export function ProfilePage() {
                   errors.username ? "username-error" : undefined
                 }
                 placeholder="Tu nombre de usuario"
-                className="w-full rounded-2xl border border-border bg-main-bg/70 px-4 py-3 text-sm text-main-text outline-none transition-all duration-300 placeholder:text-main-text/35 focus:border-primary focus:bg-card-bg focus:ring-4 focus:ring-primary/10"
+                className="w-full rounded-md border border-border/50 bg-main-bg px-3 py-2.5 text-sm text-main-text outline-none transition-colors duration-200 placeholder:text-main-text/30 focus:border-main-text/40 focus:ring-0"
               />
               {errors.username && (
                 <span
@@ -167,7 +167,7 @@ export function ProfilePage() {
             )}
 
             {state.profile && (
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-main-text/50">
+              <p className="text-[10px] font-medium uppercase tracking-[0.08em] text-main-text/40">
                 Miembro desde{" "}
                 {new Date(state.profile.created_at!).toLocaleDateString(
                   "es-ES",
@@ -184,7 +184,7 @@ export function ProfilePage() {
               type="submit"
               disabled={state.loading}
               aria-busy={state.loading}
-              className="mt-1 w-full rounded-2xl bg-page-profile py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:bg-page-profile-hover active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
+              className="mt-1 w-full rounded-md bg-[#111111] py-3 text-sm font-medium text-white transition-colors duration-200 hover:bg-[#333333] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40"
             >
               {state.loading ? "Guardando..." : "Guardar cambios"}
             </button>

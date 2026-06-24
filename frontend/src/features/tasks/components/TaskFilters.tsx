@@ -24,7 +24,7 @@ export default function TaskFilters({
   const hasActiveFilters = filterStatus !== "" || filterProject !== "";
 
   return (
-    <div className="mb-6 rounded-xl border border-border bg-main-bg p-4 shadow-sm md:p-6">
+    <div className="mb-6 rounded-xl border border-border/40 bg-main-bg p-4 md:p-6">
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Filter size={18} className="text-main-text/40" />
@@ -55,7 +55,7 @@ export default function TaskFilters({
             id="filter-status"
             value={filterStatus}
             onChange={(e) => onStatusChange(e.target.value)}
-            className="w-full rounded-lg border border-border bg-card-bg px-3 py-2.5 text-sm text-main-text outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
+            className="w-full rounded-md border border-border/50 bg-main-bg px-3 py-2.5 text-sm text-main-text outline-none transition-colors duration-200 placeholder:text-main-text/30 focus:border-main-text/40 focus:ring-0"
           >
             <option value="">Todos</option>
             {Object.entries(statusLabels).map(([key, label]) => (
@@ -77,7 +77,7 @@ export default function TaskFilters({
             id="filter-project"
             value={filterProject}
             onChange={(e) => onProjectChange(e.target.value)}
-            className="w-full rounded-lg border border-border bg-card-bg px-3 py-2.5 text-sm text-main-text outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
+            className="w-full rounded-md border border-border/50 bg-main-bg px-3 py-2.5 text-sm text-main-text outline-none transition-colors duration-200 placeholder:text-main-text/30 focus:border-main-text/40 focus:ring-0"
           >
             <option value="">Todos</option>
             {projects.map((project) => (

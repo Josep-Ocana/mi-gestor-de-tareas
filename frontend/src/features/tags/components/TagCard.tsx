@@ -14,20 +14,20 @@ export const TagCard = ({ tag, onEdit }: TagCardProps) => {
   return (
     <article
       role="listitem"
-      className="group relative overflow-hidden rounded-3xl border border-border/80 bg-main-bg/80 p-5 shadow-[0_18px_45px_-32px_rgba(15,23,42,0.5)] transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:bg-card-bg"
+      className="group relative overflow-hidden rounded-xl border border-border/40 bg-card-bg p-5"
     >
       <div className="absolute right-4 top-4 flex translate-y-1 gap-1 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
         <button
           aria-label={`Editar etiqueta: ${tag.name}`}
           onClick={() => onEdit(tag)}
-          className="cursor-pointer rounded-xl border border-border bg-card-bg/90 p-2 text-main-text/55 transition-all duration-300 hover:border-primary/30 hover:bg-primary/10 hover:text-primary active:scale-[0.96]"
+          className="cursor-pointer rounded-md border border-border bg-card-bg p-2 text-main-text/55 transition-colors duration-200 hover:border-primary/30 hover:bg-primary/10 hover:text-primary active:scale-[0.98]"
         >
           <Pencil size={15} />
         </button>
         <button
           aria-label={`Eliminar etiqueta: ${tag.name}`}
           onClick={() => deleteTag(tag.id)}
-          className="cursor-pointer rounded-xl border border-border bg-card-bg/90 p-2 text-main-text/55 transition-all duration-300 hover:border-danger/30 hover:bg-danger/10 hover:text-danger active:scale-[0.96]"
+          className="cursor-pointer rounded-md border border-border bg-card-bg p-2 text-main-text/55 transition-colors duration-200 hover:border-danger/30 hover:bg-danger/10 hover:text-danger active:scale-[0.98]"
         >
           <Trash2 size={15} />
         </button>
