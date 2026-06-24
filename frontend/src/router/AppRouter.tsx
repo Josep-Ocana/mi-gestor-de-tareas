@@ -5,6 +5,7 @@ import {
   Route,
   Routes,
 } from "react-router-dom";
+import Footer from "../components/layout/Footer";
 import Header from "../components/layout/Header";
 import { LoginPage } from "../features/auth/pages/LoginPage";
 import { RegisterPage } from "../features/auth/pages/RegisterPage";
@@ -19,9 +20,11 @@ function PrivateLayout() {
     <>
       <Header />
       <Outlet />
+      <Footer />
     </>
   );
 }
+
 export function AppRouter() {
   return (
     <BrowserRouter>
