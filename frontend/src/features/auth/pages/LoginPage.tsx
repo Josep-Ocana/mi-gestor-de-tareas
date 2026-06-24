@@ -44,7 +44,7 @@ export function LoginPage() {
 
   return (
     <main className="grid min-h-100dvh bg-main-bg text-main-text lg:grid-cols-[1.05fr_0.95fr]">
-      <section className="relative hidden overflow-hidden bg-main-text px-12 py-14 text-white dark:bg-main-text lg:flex lg:flex-col lg:justify-between">
+      <section className="relative hidden overflow-hidden bg-[#111827]   px-12 py-14 text-white lg:flex lg:flex-col lg:justify-between">
         <div className="absolute inset-0 opacity-35 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.36)_1px,transparent_0)] bg-size-[28px_28px]" />
         <div className="absolute -right-28 top-20 size-80 rounded-full bg-primary/25 blur-3xl" />
         <div className="absolute bottom-12 left-20 size-56 rounded-full bg-secondary/20 blur-3xl" />
@@ -87,7 +87,7 @@ export function LoginPage() {
         </div>
       </section>
 
-      <section className="flex min-h-dvh w-full flex-col items-center justify-center bg-main-bg px-6 py-12 dark:bg-card-bg">
+      <section className="flex min-h-dvh w-full flex-col items-center justify-center bg-main-bg px-6 py-12 ">
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="w-full max-w-md rounded-xl border border-border/40 bg-card-bg p-6 sm:p-8"
