@@ -20,6 +20,7 @@ export function ProjectsPage() {
   const { state: authState } = useAuth();
 
   const [editingProject, setEditingProject] = useState<Project | null>(null);
+  const [formKey, setFormKey] = useState(0);
 
   useEffect(() => {
     getProjects();
@@ -50,8 +51,9 @@ export function ProjectsPage() {
           owner_id: authState.user!.id,
         });
       }
-      reset(initialValues);
       setEditingProject(null);
+      reset(initialValues);
+      setFormKey((k) => k + 1);
     } catch {
       // error ya se muestra via state.error
     }
@@ -74,7 +76,7 @@ export function ProjectsPage() {
           className="rounded-xl border border-border/40 bg-card-bg p-5 lg:sticky lg:top-28 lg:self-start"
         >
           <form
-            key={editingProject?.id ?? "new"}
+            key={editingProject?.id ?? formKey}
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col gap-4"
             aria-busy={state.loading}
