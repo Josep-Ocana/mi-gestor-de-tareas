@@ -29,7 +29,7 @@ export const TaskCard = ({ task, onEdit }: TaskCardProps) => {
       role="listitem"
       className="group relative overflow-hidden rounded-xl border border-border/40 bg-card-bg p-5"
     >
-      <div className="absolute right-4 top-4 flex translate-y-1 gap-1 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+      <div className="absolute right-4 top-4 flex gap-1 opacity-100 transition-all duration-300 sm:translate-y-1 sm:opacity-0 sm:group-hover:translate-y-0 sm:group-hover:opacity-100">
         <button
           aria-label={`Editar tarea: ${task.title}`}
           onClick={() => onEdit(task)}
@@ -81,10 +81,14 @@ export const TaskCard = ({ task, onEdit }: TaskCardProps) => {
                 className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium${
                   tag.color ? "" : ` ${hashColor.bg} ${hashColor.text}`
                 }`}
-                style={tag.color ? {
-                  backgroundColor: `${tag.color}20`,
-                  color: tag.color,
-                } : undefined}
+                style={
+                  tag.color
+                    ? {
+                        backgroundColor: `${tag.color}20`,
+                        color: tag.color,
+                      }
+                    : undefined
+                }
               >
                 {tag.name}
               </span>

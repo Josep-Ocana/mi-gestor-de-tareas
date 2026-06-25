@@ -47,8 +47,7 @@ export const ProjectCard = ({
       >
         <Layers3 aria-hidden="true" size={20} />
       </div>
-
-      <div className="absolute right-4 top-4 flex translate-y-1 gap-1 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+      <div className="absolute right-4 top-4 flex gap-1 opacity-100 transition-all duration-300 sm:translate-y-1 sm:opacity-0 sm:group-hover:translate-y-0 sm:group-hover:opacity-100">
         <button
           aria-label={`Editar proyecto: ${project.name}`}
           onClick={() => onEdit(project)}
@@ -64,7 +63,6 @@ export const ProjectCard = ({
           <Trash2 size={15} />
         </button>
       </div>
-
       <div className={isFeatured ? "max-w-xl" : ""}>
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-main-text/35">
           Proyecto

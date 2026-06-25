@@ -16,7 +16,7 @@ export const TagCard = ({ tag, onEdit }: TagCardProps) => {
       role="listitem"
       className="group relative overflow-hidden rounded-xl border border-border/40 bg-card-bg p-5"
     >
-      <div className="absolute right-4 top-4 flex translate-y-1 gap-1 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+      <div className="absolute right-4 top-4 flex gap-1 opacity-100 transition-all duration-300 sm:translate-y-1 sm:opacity-0 sm:group-hover:translate-y-0 sm:group-hover:opacity-100">
         <button
           aria-label={`Editar etiqueta: ${tag.name}`}
           onClick={() => onEdit(tag)}
@@ -32,7 +32,6 @@ export const TagCard = ({ tag, onEdit }: TagCardProps) => {
           <Trash2 size={15} />
         </button>
       </div>
-
       <div className="pr-20">
         <div className="flex items-center gap-2">
           <span
@@ -50,7 +49,6 @@ export const TagCard = ({ tag, onEdit }: TagCardProps) => {
           {tag.name}
         </h3>
       </div>
-
       <div className="mt-5 flex items-center gap-2">
         <span
           className="inline-block size-4 rounded-full border border-border"
