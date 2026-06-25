@@ -1,75 +1,121 @@
-# React + TypeScript + Vite
+# Mi Gestor de Tareas
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-stack task management application built with React and Supabase. Organize your work by creating tasks, grouping them into projects, and tagging them for quick filtering.
 
-Currently, two official plugins are available:
+🔗 **[Live Demo](https://mi-gestor-de-tareas-josep.vercel.app)**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## Screenshots
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+![Login](docs/screenshots/login.png)
+![Tasks](docs/screenshots/tasks.png)
+![Projects](docs/screenshots/projects.png)
+![Tags](docs/screenshots/tags.png)
+![Profile](docs/screenshots/profile.png)
 
-Note: This will impact Vite dev & build performances.
+---
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Authentication** — Sign up and sign in with email and password via Supabase Auth
+- **Tasks** — Full CRUD with status tracking (To do, In progress, Done), project assignment and tag filtering
+- **Projects** — Group tasks by project to keep work organized
+- **Tags** — Create color-coded tags and assign them to tasks
+- **Profile** — Update username and upload a profile avatar to Supabase Storage
+- **Dark mode** — System-aware theme toggle with persistent preference
+- **Responsive** — Works on mobile and desktop
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Tech Stack
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+| Layer    | Technology                           |
+| -------- | ------------------------------------ |
+| Frontend | React 19, TypeScript, Vite           |
+| Styling  | Tailwind CSS v4                      |
+| Backend  | Supabase (PostgreSQL, Auth, Storage) |
+| Forms    | React Hook Form + Zod                |
+| Routing  | React Router v6                      |
+| Deploy   | Vercel                               |
+
+---
+
+## Architecture
+
+```
+src/
+├── context/         # Auth, Theme, Tasks, Projects, Tags — useReducer + Context
+├── features/        # Pages and components grouped by domain
+│   ├── auth/
+│   ├── tasks/
+│   ├── projects/
+│   ├── tags/
+│   └── profile/
+├── components/
+│   ├── layout/      # Header, Footer, PrivateLayout
+│   └── ui/          # Reusable primitives (icons, theme toggle)
+└── types/           # Shared TypeScript types
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Getting Started
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Prerequisites
+
+- Node.js 18+
+- A [Supabase](https://supabase.com) project
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/Josep-Ocana/mi-gestor-de-tareas.git
+cd mi-gestor-de-tareas/frontend
+
+# Install dependencies
+npm install
+
+# Set up environment variables
+cp .env.example .env.local
 ```
+
+Add your Supabase credentials to `.env.local`:
+
+```env
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+```bash
+# Start the development server
+npm run dev
+```
+
+---
+
+## Database Schema
+
+Five tables with Row Level Security (RLS) enabled:
+
+- `profiles` — linked to `auth.users`, stores username and avatar
+- `tasks` — title, description, status, project and owner
+- `projects` — name, description and owner
+- `tags` — name, color and owner
+- `task_tags` — many-to-many join table between tasks and tags
+
+---
+
+## Author
+
+**Josep Ocaña Puigdevall**
+Frontend Developer · React & TypeScript · Full Stack with Supabase
+
+[LinkedIn](https://www.linkedin.com/in/josep-oca%C3%B1a-2573a1416/) · [GitHub](https://github.com/Josep-Ocana)
+
+---
+
+## License
+
+MIT
