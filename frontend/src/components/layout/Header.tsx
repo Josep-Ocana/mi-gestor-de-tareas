@@ -1,4 +1,4 @@
-import { CheckSquare, LogOut, User } from "lucide-react";
+import { LogOut, User } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../context/auth/useAuth";
 import { ThemeToggle } from "../ui/ThemeToggle/ThemeToggle";
@@ -13,9 +13,11 @@ export default function Header() {
     <header className="sticky top-0 z-20 border-b border-border/40 bg-main-bg px-4 py-3 sm:px-6">
       <div className="mx-auto grid max-w-7xl grid-cols-[1fr_auto] items-center gap-3 lg:grid-cols-[1fr_auto_1fr]">
         <div className="flex min-w-0 items-center gap-3">
-          <div className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-black shadow-[inset_0_1px_0_rgba(255,255,255,0.18)]">
-            <CheckSquare aria-hidden="true" className="text-white" size={22} />
-          </div>
+          <img
+            src="/logo.png"
+            alt="JOP"
+            className="h-15 object-contain dark:invert"
+          />
           <h1 className="truncate text-base font-semibold tracking-tight text-main-text sm:text-lg">
             Mi Gestor de <span className="text-primary">Tareas</span>
           </h1>
@@ -91,7 +93,7 @@ export default function Header() {
           </div>
           <button
             onClick={signOut}
-            aria-label="Cerrar sesion"
+            aria-label="Cerrar sesión"
             className="flex items-center gap-2 rounded-xl px-2.5 py-2 text-sm font-medium text-danger-hover transition-all duration-300 hover:bg-danger/10 active:scale-[0.98] sm:px-3"
           >
             <LogOut size={18} />

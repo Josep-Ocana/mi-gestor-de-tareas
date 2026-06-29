@@ -109,7 +109,7 @@ export function ProjectsPage() {
                 aria-required="true"
                 aria-invalid={errors.name ? "true" : undefined}
                 aria-describedby={errors.name ? "name-error" : undefined}
-                placeholder="Añade un titulo"
+                placeholder="Añade un título"
                 className="w-full rounded-md border border-border/50 bg-main-bg px-3 py-2.5 text-sm text-main-text outline-none transition-colors duration-200 placeholder:text-main-text/30 focus:border-main-text/40 focus:ring-0"
               />
               {errors.name && (
@@ -128,7 +128,7 @@ export function ProjectsPage() {
                 htmlFor="description"
                 className="text-sm font-medium text-main-text/75"
               >
-                Descripcion
+                Descripción
               </label>
               <input
                 id="description"
@@ -138,7 +138,7 @@ export function ProjectsPage() {
                 aria-describedby={
                   errors.description ? "description-error" : undefined
                 }
-                placeholder="Añade una descripcion"
+                placeholder="Añade una descripción"
                 className="w-full rounded-md border border-border/50 bg-main-bg px-3 py-2.5 text-sm text-main-text outline-none transition-colors duration-200 placeholder:text-main-text/30 focus:border-main-text/40 focus:ring-0"
               />
               {errors.description && (

@@ -1,5 +1,4 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CheckSquare } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import z from "zod";
@@ -11,13 +10,13 @@ const registerSchema = z
     email: z.email("Introduce un email valido"),
     password: z
       .string()
-      .min(6, "La contrasena debe tener al menos 6 caracteres"),
+      .min(6, "La contraseña debe tener al menos 6 caracteres"),
     confirmPassword: z
       .string()
-      .min(6, "La contrasena debe tener al menos 6 caracteres"),
+      .min(6, "La contraseña debe tener al menos 6 caracteres"),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Las contrasenas no coinciden",
+    message: "Las contraseñas no coinciden",
     path: ["confirmPassword"],
   });
 
@@ -62,9 +61,11 @@ export function RegisterPage() {
         <div className="absolute bottom-16 left-16 size-56 rounded-full bg-secondary/20 blur-3xl" />
 
         <div className="relative flex items-center gap-3">
-          <div className="flex size-11 items-center justify-center rounded-xl border border-white/10 bg-white/10">
-            <CheckSquare aria-hidden="true" size={22} />
-          </div>
+          <img
+            src="/logo.png"
+            alt="JOP"
+            className="h-15 object-contain dark:invert"
+          />
           <span className="text-sm font-semibold tracking-tight">
             Mi Gestor de Tareas
           </span>
@@ -79,7 +80,7 @@ export function RegisterPage() {
           </h1>
           <p className="mt-6 max-w-md text-base leading-7 text-white/64">
             Crea tu cuenta y convierte ideas sueltas en tareas, proyectos y
-            etiquetas faciles de seguir.
+            etiquetas fáciles de seguir.
           </p>
         </div>
 
@@ -168,7 +169,7 @@ export function RegisterPage() {
                 htmlFor="register-email"
                 className="text-sm font-medium text-main-text/75"
               >
-                Correo electronico
+                Correo electrónico
               </label>
               <input
                 {...register("email")}
@@ -199,7 +200,7 @@ export function RegisterPage() {
                 htmlFor="register-password"
                 className="text-sm font-medium text-main-text/75"
               >
-                Password
+                Contraseña
               </label>
               <input
                 {...register("password")}
@@ -230,7 +231,7 @@ export function RegisterPage() {
                 htmlFor="register-confirm"
                 className="text-sm font-medium text-main-text/75"
               >
-                Confirmar Password
+                Confirmar contraseña
               </label>
               <input
                 {...register("confirmPassword")}

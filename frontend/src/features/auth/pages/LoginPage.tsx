@@ -1,5 +1,4 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CheckSquare } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
@@ -7,7 +6,7 @@ import { useAuth } from "../../../context/auth/useAuth";
 
 const loginSchema = z.object({
   email: z.email("Introduce un email valido"),
-  password: z.string().min(6, "La contrasena debe tener al menos 6 caracteres"),
+  password: z.string().min(6, "La contraseña debe tener al menos 6 caracteres"),
 });
 
 type LoginFormData = z.infer<typeof loginSchema>;
@@ -50,9 +49,11 @@ export function LoginPage() {
         <div className="absolute bottom-12 left-20 size-56 rounded-full bg-secondary/20 blur-3xl" />
 
         <div className="relative flex items-center gap-3">
-          <div className="flex size-11 items-center justify-center rounded-xl border border-white/10 bg-white/10">
-            <CheckSquare aria-hidden="true" size={22} />
-          </div>
+          <img
+            src="/logo.png"
+            alt="JOP"
+            className="h-15 object-contain dark:invert"
+          />
           <span className="text-sm font-semibold tracking-tight">
             Mi Gestor de Tareas
           </span>
@@ -101,7 +102,7 @@ export function LoginPage() {
               Bienvenido
             </h1>
             <p className="mt-2 text-sm leading-6 text-main-text/55">
-              Inicia sesion para continuar con tus tareas.
+              Inicia sesión para continuar con tus tareas.
             </p>
           </div>
 
@@ -120,7 +121,7 @@ export function LoginPage() {
                 htmlFor="email"
                 className="text-sm font-medium text-main-text/75"
               >
-                Correo electronico
+                Correo electrónico
               </label>
               <input
                 {...register("email")}
@@ -149,7 +150,7 @@ export function LoginPage() {
                 htmlFor="password"
                 className="text-sm font-medium text-main-text/75"
               >
-                Contrasena
+                Contraseña
               </label>
               <input
                 {...register("password")}
@@ -161,7 +162,7 @@ export function LoginPage() {
                   errors.password ? "password-error" : undefined
                 }
                 autoComplete="current-password"
-                placeholder="Tu contrasena"
+                placeholder="Tu contraseña"
                 className="w-full rounded-md border border-border/50 bg-main-bg px-3 py-2.5 text-sm text-main-text outline-none transition-colors duration-200 placeholder:text-main-text/30 focus:border-main-text/40 focus:ring-0"
               />
               {errors.password && (
@@ -181,7 +182,7 @@ export function LoginPage() {
               aria-busy={state.loading}
               className="w-full rounded-md bg-[#111111] py-3 text-sm font-medium text-white transition-colors duration-200 hover:bg-[#333333] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40"
             >
-              {state.loading ? "Iniciando sesion..." : "Entrar"}
+              {state.loading ? "Iniciando sesión..." : "Entrar"}
             </button>
           </div>
 
